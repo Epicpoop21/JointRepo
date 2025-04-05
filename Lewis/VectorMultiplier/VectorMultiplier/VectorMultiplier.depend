@@ -22,7 +22,7 @@
 1743790360 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\main.c
 	"AssignmentHeader.h"
 
-1743800169 d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\assignmentheader.h
+1743854899 d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\assignmentheader.h
 	<stdint.h>
 
 1743790581 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\test.c
@@ -33,9 +33,10 @@
 	"AssignmentHeader.h"
 	<math.h>
 
-1743845467 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\demo.c
+1743858134 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\demo.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"AssignmentHeader.h"
+	<time.h>
 

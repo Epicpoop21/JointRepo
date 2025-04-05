@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "AssignmentHeader.h"
+#include <time.h>
 
 // STUDENT CODE START
 
@@ -10,7 +11,9 @@ void demo() {
     char decisionChar;
     vector3_t vectorOne;
     vector3_t vectorTwo;
-    vector3_t vectorArray[33];
+
+    vector3_t *fileVectors = NULL;
+    int numOfVectors = 0;
 
     printf("Input from file (F) or manual input (M): ");
     scanf("%c", &decisionChar);
@@ -20,8 +23,26 @@ void demo() {
         createVectorFromInput(&vectorOne, vectorString);
         createVectorFromInput(&vectorTwo, vectorString);
     } else if (decisionChar == 70) {
-        loadFromFile("vectors.txt", &vectorArray);
+        loadFromFile("vectors.txt", &fileVectors, &numOfVectors);
+        printf("%d vectors formed from the inputs.\n \n", numOfVectors);
+
+        for (int i = 0; i < numOfVectors; i++) {
+            printf("Vector %d: \n", i + 1);
+            displayVector(fileVectors[i]);
+            printf("\n");
+        }
+
+        int decisionVector;
+        printf("Select vector to be vector 1: ");
+        scanf("%d", &decisionVector);
+        vectorOne = fileVectors[decisionVector - 1];
+
+        printf("Select vector to be vector 2: ");
+        scanf("%d", &decisionVector);
+        vectorTwo = fileVectors[decisionVector - 1];
     }
+
+    clock_t begin = clock();
 
     float dotProduct = 0;
     vectorDotProduct(vectorOne, vectorTwo, &dotProduct);
@@ -41,10 +62,12 @@ void demo() {
     printf("Vector 1 normalised: \n");
     displayVector(normalisedVector);
 
-    //fgets(vectorString, sizeof(vectorString), stdin);
-}
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("TOOK %f SECONDS", time_spent);
 
-//vector loadNumsFromFile(const char fileName[])
+    fgets(vectorString, sizeof(vectorString), stdin);
+}
 
 void splitVectors(char vectorString[], vector3_t *vector) {
     int position = 0;
@@ -61,33 +84,46 @@ void splitVectors(char vectorString[], vector3_t *vector) {
         splitPointer = strtok(NULL, " ");
         position = position + 1;
     }
-    vector->status = 1;
     //printf("X is %f, Y is %f, Z is %f, and initialization is %d.\n", vector->x, vector->y, vector->z, vector->status);
 }
 
-void loadFromFile(const char fileName[], vector3_t *vectorArray[]) {
+void loadFromFile(const char fileName[], vector3_t **vectorArray, int *numOfVectors) {
     FILE *fptr;
     fptr = fopen(fileName, "r");
-    int iteration = 0;
-    float inputNums[100];
-
-    char number[25];
-    while (fgets(number, 25, fptr)) {
-        inputNums[iteration] = atof(number);
-        iteration++;
+    if (fptr == NULL) {
+        printf("Error opening file: %s\n", fileName);
+        return;
     }
 
-    for (int i = 0; (int) iteration > i; i = i + 3) {
-        vector3_t vector;
-        vector.x = inputNums[i];
-        vector.y = inputNums[i + 1];
-        vector.z = inputNums[i + 2];
-        vector.status = 1;
-
-        //*vectorArray[i] = vector;
-        displayVector(vector);
-        printf("\n");
+    int capacity = 10;
+    *vectorArray = malloc(capacity * sizeof(vector3_t));
+    if (*vectorArray == NULL) {
+        printf("Memory allocation failed!\n");
+        fclose(fptr);
+        return;
     }
+
+    float temp[3];
+    *numOfVectors = 0;
+
+    while (fscanf(fptr, "%f" "%f" "%f", &temp[0], &temp[1], &temp[2]) == 3) {
+        if (*numOfVectors >= capacity) {
+            capacity *= 2;
+            *vectorArray = realloc(*vectorArray, capacity * sizeof(vector3_t));
+            if (*vectorArray == NULL) {
+                printf("Memory reallocation failed!\n");
+                fclose(fptr);
+                return;
+            }
+        }
+        (*vectorArray)[*numOfVectors].x = temp[0];
+        (*vectorArray)[*numOfVectors].y = temp[1];
+        (*vectorArray)[*numOfVectors].z = temp[2];
+        (*vectorArray)[*numOfVectors].status = 1;
+
+        (*numOfVectors)++;
+    }
+    fclose(fptr);
 }
 
 void createVectorFromInput(vector3_t *vector, char vectorString[]) {

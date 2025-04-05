@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1743800944 source:d:\other\coding_stuff\cpp_mini_projects\vectormultiplier\vectormultiplier\demo.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"AssignmentHeader.h"
+
+1743800169 d:\other\coding_stuff\cpp_mini_projects\vectormultiplier\vectormultiplier\assignmentheader.h
+	<stdint.h>
+
+1743790360 source:d:\other\coding_stuff\cpp_mini_projects\vectormultiplier\vectormultiplier\main.c
+	"AssignmentHeader.h"
+
+1743801075 source:d:\other\coding_stuff\cpp_mini_projects\vectormultiplier\vectormultiplier\vectormath.c
+	"AssignmentHeader.h"
+	<math.h>
+
+1743790581 source:d:\other\coding_stuff\cpp_mini_projects\vectormultiplier\vectormultiplier\test.c
+	<stdio.h>
+	"AssignmentHeader.h"
+
+1743790360 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\main.c
+	"AssignmentHeader.h"
+
+1743800169 d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\assignmentheader.h
+	<stdint.h>
+
+1743790581 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\test.c
+	<stdio.h>
+	"AssignmentHeader.h"
+
+1743801075 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\vectormath.c
+	"AssignmentHeader.h"
+	<math.h>
+
+1743845467 source:d:\other\coding_stuff\jointrepo\lewis\vectormultiplier\vectormultiplier\demo.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"AssignmentHeader.h"
+

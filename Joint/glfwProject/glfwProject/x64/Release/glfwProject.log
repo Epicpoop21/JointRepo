@@ -1,0 +1,2 @@
+﻿  main.cpp
+LINK : fatal error LNK1104: cannot open file 'D:\Other\Coding_stuff\cpp_program\glfwProject\x64\Release\glfwProject.exe'

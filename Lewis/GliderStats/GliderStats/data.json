@@ -1,0 +1,15 @@
+{
+	"glider": {
+		"gliderType": "ASK21",
+		"gliderBGAReg": "R19",
+
+		"annualValidUntil": 00000000,
+		"arcValidUntil": 00000000,
+		"insuredUntil": 00000000,
+		"nextWeighing": 00000000,
+
+		"minutesInAir": 38213,
+		"winchLaunches": 200,
+		"aerotowLaunches": 100
+	}
+}

@@ -1,15 +1,30 @@
 {
-	"glider": {
-		"gliderType": "ASK21",
-		"gliderBGAReg": "R19",
-
-		"annualValidUntil": 00000000,
-		"arcValidUntil": 00000000,
-		"insuredUntil": 00000000,
-		"nextWeighing": 00000000,
-
-		"minutesInAir": 38213,
-		"winchLaunches": 200,
-		"aerotowLaunches": 100
-	}
+    "gliders": [
+        {
+            "info": {
+                "aerotowLaunches": 634,
+                "annualValidUntil": 1780509899,
+                "arcValidUntil": 1780509899,
+                "gliderBGAReg": "506",
+                "gliderType": "Discus CS",
+                "insuredUntil": 1835636699,
+                "minutesInAir": 42029,
+                "nextWeighing": 1835636699,
+                "winchLaunches": 2500
+            }
+        },
+        {
+            "info": {
+                "aerotowLaunches": 928,
+                "annualValidUntil": 1791391242,
+                "arcValidUntil": 1791391242,
+                "gliderBGAReg": "R19",
+                "gliderType": "ASK21",
+                "insuredUntil": 1798738842,
+                "minutesInAir": 93827,
+                "nextWeighing": 1857663642,
+                "winchLaunches": 2783
+            }
+        }
+    ]
 }

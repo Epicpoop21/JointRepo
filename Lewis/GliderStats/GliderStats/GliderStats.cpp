@@ -7,9 +7,6 @@ int main()
 	StatRecorder recorder;
 	std::cout << "Initialising database\n";
 
-	Glider R19Glider(GliderInfo{ time(NULL), time(NULL), time(NULL), time(NULL), "K21", "R19", 372813, 1, 1, 2});
-	recorder.AddGlider(R19Glider);
-
 	std::string selectedOption;
 	bool running = true;
 	while (running) {
@@ -29,15 +26,30 @@ int main()
 			std::string gliderToRetrieve;
 			std::cout << "Enter glider's BGA registration: ";
 			std::cin >> gliderToRetrieve;
-			GliderInfo& gliderInfo = recorder.ReturnGliderInfo(gliderToRetrieve);
-			recorder.PrintGliderInfo(gliderInfo);
+			GliderInfo* gliderInfo = recorder.ReturnGliderInfo(gliderToRetrieve);
+			if (gliderInfo != nullptr) {
+				recorder.PrintGliderInfo(*gliderInfo);
+			}
 		}
 		else if (selectedOption == "3") {
 			std::string gliderToRetrieve;
 			std::cout << "Enter glider's BGA registration: ";
 			std::cin >> gliderToRetrieve;
-			GliderInfo& gliderInfo = recorder.ReturnGliderInfo(gliderToRetrieve);
-			recorder.ChangeValue(gliderInfo);
+			GliderInfo* gliderInfo = recorder.ReturnGliderInfo(gliderToRetrieve);
+			if (gliderInfo != nullptr) {
+				recorder.ChangeValue(*gliderInfo);
+			}
+		}
+		else if (selectedOption == "4") {
+			std::cout << "\n";
+			std::cout << "1. Add glider to list. \n";
+
+			std::cout << "Input option: ";
+			std::cin >> selectedOption;
+
+			if (selectedOption == "1") {
+				recorder.AddGlider();
+			}
 		}
 
 		std::cin.get();

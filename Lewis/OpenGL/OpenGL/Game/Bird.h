@@ -9,6 +9,7 @@ public:
 	
 	void Fall();
 	void Jump();
+	void Die();
 private:
 
 public:

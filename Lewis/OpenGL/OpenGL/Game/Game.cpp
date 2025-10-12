@@ -11,6 +11,8 @@ Game::Game()
 
 	eventHandler->GameEventDispatcher.AddListener(GameEvents::BuildTower,
 		std::bind(&Game::SpawnTower, this, std::placeholders::_1));
+	eventHandler->GameEventDispatcher.AddListener(GameEvents::Restart,
+		std::bind(&Game::ResetGame, this, std::placeholders::_1));
 
 	shader = Shader("vertexShader.vs", "fragmentShader.fs");
 	renderer = Renderer(shader);
@@ -50,16 +52,26 @@ void Game::SpawnTower(const Event<GameEvents>& event)
 		RenderLayout upper = renderer.CreateRectangle(xyCoord{ 2100.0f, 1140.0f }, 100.0f, 960.0f);
 		RenderLayout lower = renderer.CreateRectangle(xyCoord{ 2100.0f, -60.0f }, 100.0f, 960.0f);
 
-		towers.push_back(std::make_unique<Tower>(std::move(upper), std::move(lower)));
+		towers.push_back(new Tower(std::move(upper), std::move(lower)));
 	}
+}
+
+void Game::ResetGame(const Event<GameEvents>& event)
+{
+	bird->Die();
+	eventHandler->FireGameEvent(GameEvents::PauseToggle);
+	for (Tower* tower : towers) {
+		delete tower;
+	}
+	towers.clear();
 }
 
 void Game::MoveTowers() {
 	for (auto& tower : towers) {
-		tower->upperTower.centre.x -= 1.5f;
-		tower->lowerTower.centre.x -= 1.5f;
-		tower->upperTower.modelMatrix = glm::translate(tower->upperTower.modelMatrix, glm::vec3(-1.5f, 0.0f, 0.0f));
-		tower->lowerTower.modelMatrix = glm::translate(tower->lowerTower.modelMatrix, glm::vec3(-1.5f, 0.0f, 0.0f));
+		tower->upperTower.centre.x -= 4.5f;
+		tower->lowerTower.centre.x -= 4.5f;
+		tower->upperTower.modelMatrix = glm::translate(tower->upperTower.modelMatrix, glm::vec3(-4.5f, 0.0f, 0.0f));
+		tower->lowerTower.modelMatrix = glm::translate(tower->lowerTower.modelMatrix, glm::vec3(-4.5f, 0.0f, 0.0f));
 	}
 }
 
@@ -69,20 +81,26 @@ void Game::CheckCollisions()
 	float maxY = bird->layout.centre.y + radius;
 	float minY = bird->layout.centre.y - radius;
 	float maxX = bird->layout.centre.x + radius;
+	float minX = bird->layout.centre.x - radius;
 
-	for (auto& tower : towers) {
-		if (tower->upperTower.centre.x - 50.0f < maxX) {
-			if (tower->bottomTowerTopCoord < minY) {
-				glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+	for (auto it = towers.begin(); it != towers.end();) {
+		Tower* tower = *it;
+		//std::cout << "RIGHT MOST X COORD IS: " << tower->upperTower.centre.x << " AND MAX X IS: " << maxX << "\n";
+
+		if (tower->upperTower.centre.x + 50.0f < 0.0f) {
+			delete tower;
+			it = towers.erase(it);
+			continue;
+		}
+
+		if (tower->upperTower.centre.x - 50.0f < maxX && tower->upperTower.centre.x + 50.0f > minX) {
+			if (tower->bottomTowerTopCoord > minY || tower->topTowerBottomCoord < maxY) {
+				eventHandler->FireGameEvent(GameEvents::Restart);
+				break;
+				//glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 			}
-			else if (tower->topTowerBottomCoord > maxY) {
-				glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-			} 
 		}
-		else if (tower->upperTower.centre.x + 50.0f < 0.0f) {
-			std::cout << "Delete tower \n";
-			tower->~Tower();
-		}
+		++it;
 	} 
 }
 

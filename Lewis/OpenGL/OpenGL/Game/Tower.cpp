@@ -17,8 +17,10 @@ Tower::Tower(RenderLayout&& upperTower, RenderLayout&& lowerTower)
     }
 
     std::cout << "\n \nNEW TOWER\n";
-    topTowerBottomCoord = upperTower.centre.y - 960.0f + yOffset;
-    bottomTowerTopCoord = lowerTower.centre.y + 960.0f + yOffset;
+    topTowerBottomCoord = upperTower.centre.y - 960.0f/2 + yOffset;
+    std::cout << "Top tower's bottom coord is: " << topTowerBottomCoord << "\n";
+    bottomTowerTopCoord = lowerTower.centre.y + 960.0f/2 + yOffset;
+    std::cout << "Bottom tower's top coord is: " << bottomTowerTopCoord << "\n";
 
 
     this->upperTower.modelMatrix = glm::translate(upperTower.modelMatrix, glm::vec3(upperTower.centre.x, upperTower.centre.y + yOffset, 0.0f));
@@ -28,4 +30,5 @@ Tower::Tower(RenderLayout&& upperTower, RenderLayout&& lowerTower)
 
 Tower::~Tower()
 {
+    std::cout << "Deleted tower \n";
 }

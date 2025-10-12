@@ -16,6 +16,7 @@ private:
 	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 	void InitObjects();
 	void SpawnTower(const Event<GameEvents>& event);
+	void ResetGame(const Event<GameEvents>& event);
 	void MoveTowers();
 	void CheckCollisions();
 public:
@@ -27,5 +28,5 @@ public:
 
 	Bird* bird;
 private:
-	std::vector<std::unique_ptr<Tower>> towers;
+	std::vector<Tower*> towers;
 };

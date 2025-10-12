@@ -1,29 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\",
+  "WorkspaceRootPath": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|solutionrelative:glfwProject\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\shaders.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\shaders.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|solutionrelative:glfwProject\\shaders.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\vertexShader.vs||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\vertexShader.vs||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|solutionrelative:glfwProject\\vertexShader.vs||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\fragShader.fs||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\fragShader.fs||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|solutionrelative:glfwProject\\fragShader.fs||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\projectHeader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\projectHeader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|solutionrelative:glfwProject\\projectHeader.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\wave.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\wave.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{7B56CA5E-D69D-469C-88F5-4575F09B185F}|glfwProject\\glfwProject.vcxproj|solutionrelative:glfwProject\\wave.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -40,11 +40,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\main.cpp",
+              "DocumentMoniker": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\main.cpp",
               "RelativeDocumentMoniker": "glfwProject\\main.cpp",
-              "ToolTip": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\main.cpp",
+              "ToolTip": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\main.cpp",
               "RelativeToolTip": "glfwProject\\main.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAABMAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABAAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-24T21:13:16.731Z",
               "IsPinned": true,
@@ -54,66 +54,61 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "wave.cpp",
-              "DocumentMoniker": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\wave.cpp",
+              "DocumentMoniker": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\wave.cpp",
               "RelativeDocumentMoniker": "glfwProject\\wave.cpp",
-              "ToolTip": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\wave.cpp",
+              "ToolTip": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\wave.cpp",
               "RelativeToolTip": "glfwProject\\wave.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-03-25T20:32:27.383Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-25T20:32:27.383Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "projectHeader.h",
-              "DocumentMoniker": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\projectHeader.h",
+              "DocumentMoniker": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\projectHeader.h",
               "RelativeDocumentMoniker": "glfwProject\\projectHeader.h",
-              "ToolTip": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\projectHeader.h",
+              "ToolTip": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\projectHeader.h",
               "RelativeToolTip": "glfwProject\\projectHeader.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-03-25T20:30:59.558Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-25T20:30:59.558Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "fragShader.fs",
-              "DocumentMoniker": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\fragShader.fs",
+              "DocumentMoniker": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\fragShader.fs",
               "RelativeDocumentMoniker": "glfwProject\\fragShader.fs",
-              "ToolTip": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\fragShader.fs",
+              "ToolTip": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\fragShader.fs",
               "RelativeToolTip": "glfwProject\\fragShader.fs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-03-25T20:20:20.531Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-25T20:20:20.531Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "vertexShader.vs",
-              "DocumentMoniker": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\vertexShader.vs",
+              "DocumentMoniker": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\vertexShader.vs",
               "RelativeDocumentMoniker": "glfwProject\\vertexShader.vs",
-              "ToolTip": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\vertexShader.vs",
+              "ToolTip": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\vertexShader.vs",
               "RelativeToolTip": "glfwProject\\vertexShader.vs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-12-26T18:23:05.913Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-26T18:23:05.913Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "shaders.h",
-              "DocumentMoniker": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\shaders.h",
+              "DocumentMoniker": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\shaders.h",
               "RelativeDocumentMoniker": "glfwProject\\shaders.h",
-              "ToolTip": "D:\\Other\\Coding_stuff\\JointRepo\\Joint\\glfwProject\\glfwProject\\shaders.h",
+              "ToolTip": "C:\\Users\\l9w1s\\JointRepo\\Joint\\glfwProject\\glfwProject\\shaders.h",
               "RelativeToolTip": "glfwProject\\shaders.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-26T16:31:07.146Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-26T16:31:07.146Z"
             }
           ]
         }

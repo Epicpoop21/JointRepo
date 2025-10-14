@@ -64,14 +64,15 @@ void Game::ResetGame(const Event<GameEvents>& event)
 		delete tower;
 	}
 	towers.clear();
+	bird->Fall();
 }
 
 void Game::MoveTowers() {
 	for (auto& tower : towers) {
-		tower->upperTower.centre.x -= 4.5f;
-		tower->lowerTower.centre.x -= 4.5f;
-		tower->upperTower.modelMatrix = glm::translate(tower->upperTower.modelMatrix, glm::vec3(-4.5f, 0.0f, 0.0f));
-		tower->lowerTower.modelMatrix = glm::translate(tower->lowerTower.modelMatrix, glm::vec3(-4.5f, 0.0f, 0.0f));
+		tower->upperTower.centre.x -= 1.5f;
+		tower->lowerTower.centre.x -= 1.5f;
+		tower->upperTower.modelMatrix = glm::translate(tower->upperTower.modelMatrix, glm::vec3(-1.5f, 0.0f, 0.0f));
+		tower->lowerTower.modelMatrix = glm::translate(tower->lowerTower.modelMatrix, glm::vec3(-1.5f, 0.0f, 0.0f));
 	}
 }
 
@@ -90,11 +91,13 @@ void Game::CheckCollisions()
 		if (tower->upperTower.centre.x + 50.0f < 0.0f) {
 			delete tower;
 			it = towers.erase(it);
+			eventHandler->FireGameEvent(GameEvents::Score);
 			continue;
 		}
 
 		if (tower->upperTower.centre.x - 50.0f < maxX && tower->upperTower.centre.x + 50.0f > minX) {
 			if (tower->bottomTowerTopCoord > minY || tower->topTowerBottomCoord < maxY) {
+				std::cout << "SCORE WAS: " << data.score << "\n";
 				eventHandler->FireGameEvent(GameEvents::Restart);
 				break;
 				//glClearColor(1.0f, 0.0f, 0.0f, 0.0f);

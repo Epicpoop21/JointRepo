@@ -14,7 +14,7 @@ Bird::~Bird()
 
 void Bird::Fall()
 {
-	x = x + 0.5f;
+	x = x + 0.25f;
 	layout.centre.y = currentY + (-0.075 * (x * x)) + (6 * x);
 	if (layout.centre.y < 0) {
 		Die();

@@ -51,6 +51,7 @@ void GameData::InvertPolyframeMode(const Event<GameEvents>& event)
 
 void GameData::IncrementScore(const Event<GameEvents>& event) {
 	score++;
+	std::cout << "Incremented SCORE \n";
 }
 
 void GameData::ResetScore(const Event<GameEvents>& event) {

@@ -1,17 +1,14 @@
 #include <iostream>
 
-#include "Game.h";
+#include "Program/Game.h";
 
 int main() {
-	std::cout << "Hello world";
+	std::cout << "Started up \n";
 
 	Game game;
 	
-	std::cout << "GAME ENDED \n";
-	if (game.StartUpdateLoop() == 1) {
-		return 1;
-	}
+	game.StartUpdateLoop();
 	
-
+	std::cout << "Terminated \n";
 	return 1;
 }

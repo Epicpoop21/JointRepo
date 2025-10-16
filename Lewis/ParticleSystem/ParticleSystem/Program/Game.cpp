@@ -16,32 +16,39 @@ Game::~Game()
 
 int Game::StartUpdateLoop()
 {
-	vertices = {-0.5f,  -0.5f,  0.0f,
-			    -0.5f,   0.5f,  0.0f,
-				 0.5f,  -0.5f,  0.0f,
-				 0.5f,   0.5f,  0.0f};
+	vertices = { 0.0f,      0.0f,      0.0f,
+			     0.0f,      1080.0f,   0.0f,
+				 1920.0f,   0.0f,      0.0f,
+				 1920.0f,   1090.0f,   0.0f};
 
 	indices = { 0,  1,  2,
 				1,  2,  3};
 
-	float vertexes[] = { -0.5f,  -0.5f,  0.0f,
-				-0.5f,   0.5f,  0.0f,
-				 0.5f,  -0.5f,  0.0f,
-				 0.5f,   0.5f,  0.0f };
+	VertexArray va;
+	VertexBufferLayout vbl;
+	vbl.Push<float>(3);
+	VertexBuffer vb(vertices.data(), vertices.size() * sizeof(float));
+	IndexBuffer ib(indices.data(), indices.size() * sizeof(unsigned int));
+	va.AddBuffer(vbl, vb);
 
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
+	ParticleManager pm(shader);
+	pm.SetupShader();
 
-	glBindVertexArray(VAO);
-	VertexBuffer vb(vertexes, sizeof(vertexes));
-	IndexBuffer ib(indices.data(), sizeof(indices));
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+
+	projection = glm::ortho(0.0f, 1920.0f, 0.0f, 1080.0f);
+
+	shader.Use();
+	shader.SetMat4f("model", model);
+	shader.SetMat4f("view", view);
+	shader.SetMat4f("projection", projection);
+
+	shader.SetVec3f("colour", 1.0f, 0.3f, 0.2f);
+
+
 	
-	vb.Bind();
-	ib.Bind();
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-
 	while (!glfwWindowShouldClose(window)) {
 		ProcessInput();
 
@@ -49,7 +56,9 @@ int Game::StartUpdateLoop()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.Use();
-		glBindVertexArray(VAO);
+		pm.Render();
+		va.Bind();
+		ib.Bind();
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

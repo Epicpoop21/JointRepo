@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Program\ParticleManager.cpp" />
     <ClCompile Include="Rendering\IndexBuffer.cpp" />
     <ClCompile Include="Program\Game.cpp" />
     <ClCompile Include="glad.c" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Rendering\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Program\ParticleManager.h" />
     <ClInclude Include="Rendering\IndexBuffer.h" />
     <ClInclude Include="Program\Game.h" />
     <ClInclude Include="Program\GameData.h" />

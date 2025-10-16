@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Program/Game.h";
+#include "Program/Game.h"
 
 int main() {
 	std::cout << "Started up \n";

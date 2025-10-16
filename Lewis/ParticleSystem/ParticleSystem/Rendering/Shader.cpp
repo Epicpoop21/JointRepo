@@ -58,11 +58,52 @@ Shader::Shader(const char* vertexShaderFilePath, const char* fragementShaderFile
 
 Shader::~Shader()
 {
+	
 }
 
 void Shader::Use()
 {
 	glUseProgram(m_ShaderID);
+}
+
+void Shader::SetBool(const std::string& uniformName, bool v0)
+{
+	glUniform1i(glGetUniformLocation(m_ShaderID, uniformName.c_str()), v0);
+}
+
+void Shader::SetFloat(const std::string& uniformName, float v0)
+{
+	glUniform1f(glGetUniformLocation(m_ShaderID, uniformName.c_str()), v0);
+}
+
+void Shader::SetInt(const std::string& uniformName, int v0)
+{
+	glUniform1i(glGetUniformLocation(m_ShaderID, uniformName.c_str()), v0);
+}
+
+void Shader::SetVec2f(const std::string& uniformName, float v0, float v1)
+{
+	glUniform2f(glGetUniformLocation(m_ShaderID, uniformName.c_str()), v0, v1);
+}
+
+void Shader::SetVec2fv(const std::string& uniformName, int size, float* value)
+{
+	glUniform2fv(glGetUniformLocation(m_ShaderID, uniformName.c_str()), size, value);
+}
+
+void Shader::SetVec3f(const std::string& uniformName, float v0, float v1, float v2)
+{
+	glUniform3f(glGetUniformLocation(m_ShaderID, uniformName.c_str()), v0, v1, v2);
+}
+
+void Shader::SetVec4f(const std::string& uniformName, float v0, float v1, float v2, float v3)
+{
+	glUniform4f(glGetUniformLocation(m_ShaderID, uniformName.c_str()), v0, v1, v2, v3);
+}
+
+void Shader::SetMat4f(const std::string& uniformName, glm::mat4 mat)
+{
+	glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, uniformName.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void Shader::CheckCompilerIssues(unsigned int shader, std::string shaderType)

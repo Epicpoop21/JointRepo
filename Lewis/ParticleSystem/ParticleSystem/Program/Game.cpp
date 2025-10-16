@@ -24,17 +24,20 @@ int Game::StartUpdateLoop()
 	indices = { 0,  1,  2,
 				1,  2,  3};
 
-	unsigned int VAO, VBO, EBO;
+	float vertexes[] = { -0.5f,  -0.5f,  0.0f,
+				-0.5f,   0.5f,  0.0f,
+				 0.5f,  -0.5f,  0.0f,
+				 0.5f,   0.5f,  0.0f };
+
+	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+	VertexBuffer vb(vertexes, sizeof(vertexes));
+	IndexBuffer ib(indices.data(), sizeof(indices));
+	
+	vb.Bind();
+	ib.Bind();
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 

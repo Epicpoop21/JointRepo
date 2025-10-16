@@ -126,18 +126,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rendering\IndexBuffer.cpp" />
     <ClCompile Include="Program\Game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Program\GameData.cpp" />
     <ClCompile Include="Rendering\Renderer.cpp" />
     <ClCompile Include="Rendering\Shader.cpp" />
+    <ClCompile Include="Rendering\VertexBuffer.cpp" />
+    <ClCompile Include="Rendering\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Rendering\IndexBuffer.h" />
     <ClInclude Include="Program\Game.h" />
     <ClInclude Include="Program\GameData.h" />
     <ClInclude Include="Rendering\Renderer.h" />
     <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Rendering\VertexBuffer.h" />
+    <ClInclude Include="Rendering\VertexArray.h" />
+    <ClInclude Include="Rendering\VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Rendering\FragmentShader.s" />

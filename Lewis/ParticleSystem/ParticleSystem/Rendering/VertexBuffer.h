@@ -4,7 +4,6 @@
 class VertexBuffer
 {
 public:
-	VertexBuffer() = default;
 	VertexBuffer(const void* data, unsigned int nOfValues);
 	~VertexBuffer();
 

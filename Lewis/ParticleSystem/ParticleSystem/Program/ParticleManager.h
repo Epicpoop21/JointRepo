@@ -29,9 +29,9 @@ private:
 	std::vector<float> vertexPositions;
 	std::vector<unsigned int> indices;
 
-	VertexArray va;
-	VertexBuffer vb;
-	IndexBuffer ib;
-	VertexBufferLayout vbl;
+	VertexArray* va;
+	VertexBuffer* vb;
+	IndexBuffer* ib;
+	VertexBufferLayout* vbl;
 };
 

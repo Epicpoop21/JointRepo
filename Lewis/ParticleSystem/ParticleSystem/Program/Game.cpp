@@ -16,24 +16,6 @@ Game::~Game()
 
 int Game::StartUpdateLoop()
 {
-	vertices = { 0.0f,      0.0f,      0.0f,
-			     0.0f,      1080.0f,   0.0f,
-				 1920.0f,   0.0f,      0.0f,
-				 1920.0f,   1090.0f,   0.0f};
-
-	indices = { 0,  1,  2,
-				1,  2,  3};
-
-	VertexArray va;
-	VertexBufferLayout vbl;
-	vbl.Push<float>(3);
-	VertexBuffer vb(vertices.data(), vertices.size() * sizeof(float));
-	IndexBuffer ib(indices.data(), indices.size() * sizeof(unsigned int));
-	va.AddBuffer(vbl, vb);
-
-	ParticleManager pm(shader);
-	pm.SetupShader();
-
 	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
@@ -47,8 +29,9 @@ int Game::StartUpdateLoop()
 
 	shader.SetVec3f("colour", 1.0f, 0.3f, 0.2f);
 
+	ParticleManager pm(shader);
+	pm.SetupShader();
 
-	
 	while (!glfwWindowShouldClose(window)) {
 		ProcessInput();
 
@@ -57,10 +40,6 @@ int Game::StartUpdateLoop()
 
 		shader.Use();
 		pm.Render();
-		va.Bind();
-		ib.Bind();
-
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

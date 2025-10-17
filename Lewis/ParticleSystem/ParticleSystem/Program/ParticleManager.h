@@ -26,5 +26,12 @@ private:
 	Shader& shader;
 	float particleRadius;
 	std::vector<Particle> particles;
+	std::vector<float> vertexPositions;
+	std::vector<unsigned int> indices;
+
+	VertexArray va;
+	VertexBuffer vb;
+	IndexBuffer ib;
+	VertexBufferLayout vbl;
 };
 

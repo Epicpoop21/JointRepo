@@ -1,5 +1,5 @@
 #include "VertexArray.h"
-
+#include <iostream>
 VertexArray::VertexArray()
 {
 	glGenVertexArrays(1, &m_BufferID);
@@ -20,10 +20,13 @@ void VertexArray::AddBuffer(const VertexBufferLayout& layout, VertexBuffer& vb)
 		const auto& element = elements[i];
 		glVertexAttribPointer(i, element.count, element.type, element.normalised, layout.GetStride(), (const void*)(uintptr_t)offset);
 		glEnableVertexAttribArray(i);
+		std::cout << "Attrib " << i << ": count=" << element.count
+			<< ", type=" << element.type
+			<< ", normalized=" << element.normalised
+			<< ", offset=" << offset << "\n";
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
 	}
-	vb.Unbind();
-	Unbind();
+	std::cout << "Stride = " << layout.GetStride() << "\n";
 }
 
 void VertexArray::Bind()

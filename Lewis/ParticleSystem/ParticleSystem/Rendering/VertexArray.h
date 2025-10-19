@@ -32,6 +32,7 @@ private:
 
 public:
 	unsigned int m_BufferID;
+	unsigned int nOfBuffers;
 private:
 
 };

@@ -48,7 +48,7 @@ private:
 	float cellSize;
 	std::vector<Particle> particles;
 	std::unordered_map<int64_t, std::vector<int>> grid;
-	std::vector<float> vertexPositions;
+	std::vector<glm::vec3> instanceData;
 	std::vector<unsigned int> indices;
 	RenderInfo* renderObjects = nullptr;
 	EventHandler* eventHandler;

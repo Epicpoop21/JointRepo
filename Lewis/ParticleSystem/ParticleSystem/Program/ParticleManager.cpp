@@ -2,10 +2,10 @@
 
 ParticleManager::ParticleManager(Shader& shader, GameData* gameData) 
 	: particleRadius(1.0f), 
-	particleSpacing(2.0f), 
-	particleBounciness(0.7f), 
+	particleSpacing(0.0f), 
+	particleBounciness(0.88f), 
 	particleInitialVelocity(100.0f), 
-	particleRepelDistance(0.0f), 
+	particleRepelDistance(1.0f), 
 	mouseRadius(300.0f),
 	shader(shader), gameData(gameData)
 {
@@ -31,42 +31,13 @@ ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
 
 	std::cout << "NUMBER OF PARTICLES IS: " << particles.size() << "\n";
 	
-	int c = 0;
-	for (int i = 0; i < particles.size(); i++) {
-		indices.push_back(0 + c);
-		indices.push_back(1 + c);
-		indices.push_back(2 + c);
-		indices.push_back(1 + c);
-		indices.push_back(2 + c);
-		indices.push_back(3 + c);
-		c += 4;
-	}
+	indices = {
+		0, 1, 2,
+		1, 2, 3
+	};
 
 	for (Particle& particle : particles) {
-		vertexPositions.push_back(particle.coords.x - particleRadius);
-		vertexPositions.push_back(particle.coords.y - particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		//std::cout << glm::length(particle.velocity) << "\n";
-		vertexPositions.push_back(glm::length(particle.velocity));
-
-		vertexPositions.push_back(particle.coords.x - particleRadius);
-		vertexPositions.push_back(particle.coords.y + particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		vertexPositions.push_back(glm::length(particle.velocity));
-
-		vertexPositions.push_back(particle.coords.x + particleRadius);
-		vertexPositions.push_back(particle.coords.y - particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		vertexPositions.push_back(glm::length(particle.velocity));
-
-		vertexPositions.push_back(particle.coords.x + particleRadius);
-		vertexPositions.push_back(particle.coords.y + particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		vertexPositions.push_back(glm::length(particle.velocity));
+		instanceData.push_back(glm::vec3(particle.coords, glm::length(particle.velocity)));
 	}
 
 	/*for (Particle& particle : particles) {
@@ -83,17 +54,21 @@ ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
 
 	VertexArray va;
 	va.Bind();
-	VertexBuffer quadVBO = VertexBuffer(vertexPositions.data(), vertexPositions.size() * sizeof(float), GL_DYNAMIC_DRAW);
-	VertexBuffer instanceVB = VertexBuffer(vertexPositions.data(), vertexPositions.size() * sizeof(float), GL_DYNAMIC_DRAW);
+	VertexBufferLayout vbl1;
+	VertexBufferLayout vbl2;
+
 	IndexBuffer ib = IndexBuffer(indices.data(), indices.size() * sizeof(unsigned int));
-	VertexBufferLayout vbl;
 
-	vbl.Push<float>(2);
-	vbl.Push<float>(3);
-	va.AddBuffer(vbl, quadVBO);
+	VertexBuffer quadVBO = VertexBuffer(quadVertices, sizeof(quadVertices), GL_STATIC_DRAW);
+	vbl1.Push<float>(2);
+	va.AddBuffer(vbl1, quadVBO);
 
+	VertexBuffer instanceVB = VertexBuffer(instanceData.data(), instanceData.size() * sizeof(glm::vec3), GL_DYNAMIC_DRAW);
+	vbl2.Push<float>(3);
+	va.AddBuffer(vbl2, instanceVB);
+	glVertexAttribDivisor(1, 1);
 
-	renderObjects = new RenderInfo{ std::move(va), std::move(quadVBO), std::move(instanceVB), std::move(ib), std::move(vbl) };
+	renderObjects = new RenderInfo{ std::move(va), std::move(quadVBO), std::move(instanceVB), std::move(ib), std::move(vbl1), std::move(vbl2)};
 }
 
 ParticleManager::~ParticleManager()
@@ -113,35 +88,14 @@ void ParticleManager::Setup()
 void ParticleManager::Render()
 {
 	for (Particle& particle : particles) {
-		vertexPositions.push_back(particle.coords.x - particleRadius);
-		vertexPositions.push_back(particle.coords.y - particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		vertexPositions.push_back(glm::length(particle.velocity));
-
-		vertexPositions.push_back(particle.coords.x - particleRadius);
-		vertexPositions.push_back(particle.coords.y + particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		vertexPositions.push_back(glm::length(particle.velocity));
-
-		vertexPositions.push_back(particle.coords.x + particleRadius);
-		vertexPositions.push_back(particle.coords.y - particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		vertexPositions.push_back(glm::length(particle.velocity));
-
-		vertexPositions.push_back(particle.coords.x + particleRadius);
-		vertexPositions.push_back(particle.coords.y + particleRadius);
-		vertexPositions.push_back(particle.coords.x);
-		vertexPositions.push_back(particle.coords.y);
-		vertexPositions.push_back(glm::length(particle.velocity));
+		instanceData.push_back(glm::vec3(particle.coords, glm::length(particle.velocity)));
 	}
-	renderObjects->vb.UpdateData(vertexPositions.data(), vertexPositions.size() * sizeof(float), GL_DYNAMIC_DRAW);
+	renderObjects->instanceVB.UpdateData(instanceData.data(), instanceData.size() * sizeof(glm::vec3), GL_DYNAMIC_DRAW);
 
 	renderObjects->va.Bind();
 	renderObjects->ib.Bind();
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0); 
+
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instanceData.size());
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR) {
 		std::cout << "OpenGL error: " << err << std::endl;
@@ -175,7 +129,7 @@ void ParticleManager::Vibrate(float deltaTime)
 			particle.velocity = GenerateRandomVelocity();
 		} 
 	}
-	vertexPositions.erase(vertexPositions.begin(), vertexPositions.end());
+	instanceData.erase(instanceData.begin(), instanceData.end());
 }
 
 void ParticleManager::CheckCollisions()
@@ -246,7 +200,7 @@ void ParticleManager::BuildSpatialHash()
 void ParticleManager::Click(const Event<GameEvents>& gameEvent)
 {
 	glm::vec2 centre = gameData->mousePos;
-	float explosionStrength = 100.0f;
+	float explosionStrength = 500.0f;
 	//std::cout << "X: " << gameData->mousePos.x << " Y: " << gameData->mousePos.y << "\n";
 	for (Particle& particle : particles) {
 		glm::vec2 toParticle = particle.coords - centre;

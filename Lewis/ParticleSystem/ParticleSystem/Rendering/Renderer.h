@@ -14,12 +14,13 @@
 
 struct RenderInfo {
 	VertexArray va;
-	VertexBuffer vb;
+	VertexBuffer quadVB;
+	VertexBuffer instanceVB;
 	IndexBuffer ib;
 	VertexBufferLayout vbl;
 
-	RenderInfo(VertexArray&& va, VertexBuffer&& vb, IndexBuffer&& ib, VertexBufferLayout&& vbl)
-		: va(std::move(va)), vb(std::move(vb)), vbl(std::move(vbl)), ib(std::move(ib)) {
+	RenderInfo(VertexArray&& va, VertexBuffer&& quadVB, VertexBuffer&& instanceVB, IndexBuffer&& ib, VertexBufferLayout&& vbl)
+		: va(std::move(va)), quadVB(std::move(quadVB)), instanceVB(std::move(instanceVB)), vbl(std::move(vbl)), ib(std::move(ib)) {
 	}
 };
 

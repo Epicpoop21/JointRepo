@@ -1,5 +1,7 @@
 #pragma once
 #include "../Rendering/Renderer.h"
+#include "../Events/EventHeader.h"
+#include "GameData.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,11 +18,11 @@ struct Particle {
 class ParticleManager
 {
 public:
-	ParticleManager(Shader& shader);
+	ParticleManager(Shader& shader, GameData* gameData);
 	~ParticleManager();
 
 	void Setup();
-	void Render(float deltaTime);
+	void Render();
 	void Vibrate(float deltaTime);
 	void CheckCollisions();
 private:
@@ -28,7 +30,8 @@ private:
 	inline int64_t HashCell(int x, int y);
 	inline glm::ivec2 GetCellCoordinates(const glm::vec2& pos, float cellSize);
 	void BuildSpatialHash();
-
+	void Click(const Event<GameEvents>& gameEvent);
+	glm::vec2 GenerateRandomVelocity();
 public:
 
 private:
@@ -36,7 +39,9 @@ private:
 	float particleBounciness;
 	float particleInitialVelocity;
 	float particleRepelDistance;
+	float mouseRadius;
 
+	float* quadVertices;
 	Shader& shader;
 	float particleRadius;
 	float minDistanceBetweenParticles;
@@ -46,6 +51,8 @@ private:
 	std::vector<float> vertexPositions;
 	std::vector<unsigned int> indices;
 	RenderInfo* renderObjects = nullptr;
+	EventHandler* eventHandler;
+	GameData* gameData;
 
 	const int neighbouringOffsets[9][2] = {
 		{-1, -1}, {0, -1}, {1, -1},

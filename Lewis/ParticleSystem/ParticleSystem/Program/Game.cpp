@@ -1,12 +1,14 @@
 #include "Game.h"
-
+#include <thread>
 Game::Game() 
 {
+	data = GameData();
+	data.screenX = 2560.0f;
+	data.screenY = 1440.0f;
 	SetupContext();
 	CreateWindow();
 	CheckGladInit();
-	glViewport(0, 0, 1920, 1080);
-	data = GameData();
+	glViewport(0, 0, data.screenX, data.screenY);
 	shader = Shader("Rendering/VertexShader.s", "Rendering/FragmentShader.s");
 	eventHandler = EventHandler::GetInstance();
 }
@@ -21,7 +23,7 @@ int Game::StartUpdateLoop()
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
 
-	projection = glm::ortho(0.0f, 1920.0f, 0.0f, 1080.0f);
+	projection = glm::ortho(0.0f, data.screenX, 0.0f, data.screenY);
 
 	shader.Use();
 	shader.SetMat4f("model", model);
@@ -30,7 +32,7 @@ int Game::StartUpdateLoop()
 
 	shader.SetVec3f("colour", 1.0f, 0.3f, 0.2f);
 
-	ParticleManager pm(shader);
+	ParticleManager pm(shader, &data);
 	pm.Setup();
 
 	float lastTime = glfwGetTime();
@@ -51,10 +53,10 @@ int Game::StartUpdateLoop()
 		shader.Use();
 
 		if (!data.paused) {
-			pm.CheckCollisions();
 			pm.Vibrate(deltaTime);
+			//pm.CheckCollisions();
 		}
-		pm.Render(deltaTime);
+		pm.Render();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -84,10 +86,11 @@ void Game::ProcessInput()
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && keyMap[GLFW_KEY_P]) {
 		keyMap[GLFW_KEY_P] = false;
 	}
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+		EventHandler::GetInstance()->FireGameEvent(GameEvents::MouseIsDown);
+	}
+	
 }
-
-
-
 
 void Game::SetupContext()
 {
@@ -111,7 +114,7 @@ void Game::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 
 void Game::CreateWindow()
 {
-	window = glfwCreateWindow(1920, 1080, "Particle Simulation", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(data.screenX, data.screenY, "Particle Simulation", glfwGetPrimaryMonitor(), NULL);
 	if (window == NULL) {
 		std::cout << "FAILED TO INITIALISE WINDOW.\n";
 		glfwTerminate();

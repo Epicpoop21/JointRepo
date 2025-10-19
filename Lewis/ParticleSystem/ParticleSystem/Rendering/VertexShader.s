@@ -1,15 +1,17 @@
 #version 440 core
 
 layout (location = 0) in vec2 aQuadPos;
-layout (location = 1) in vec2 aCircleCentre;
+layout (location = 1) in vec3 aCircleCentre;
 
 out vec2 circleCentre;
+out float speed;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
-	circleCentre = aCircleCentre;
+	circleCentre = aCircleCentre.xy;
+	speed = aCircleCentre.z;
 	gl_Position = projection * view * model * vec4(aQuadPos, 0.0f, 1.0f);
 }

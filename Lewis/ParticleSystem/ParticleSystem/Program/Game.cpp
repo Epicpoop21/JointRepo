@@ -6,8 +6,9 @@ Game::Game()
 	CreateWindow();
 	CheckGladInit();
 	glViewport(0, 0, 1920, 1080);
-
+	data = GameData();
 	shader = Shader("Rendering/VertexShader.s", "Rendering/FragmentShader.s");
+	eventHandler = EventHandler::GetInstance();
 }
 
 Game::~Game()
@@ -30,16 +31,30 @@ int Game::StartUpdateLoop()
 	shader.SetVec3f("colour", 1.0f, 0.3f, 0.2f);
 
 	ParticleManager pm(shader);
-	pm.SetupShader();
+	pm.Setup();
+
+	float lastTime = glfwGetTime();
+	float deltaTime;
+
+	keyMap[GLFW_KEY_SPACE] = false;
+	keyMap[GLFW_KEY_P] = false;
 
 	while (!glfwWindowShouldClose(window)) {
 		ProcessInput();
 
-		glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+		deltaTime = glfwGetTime() - lastTime;
+		lastTime = glfwGetTime();
+
+		glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.Use();
-		pm.Render();
+
+		if (!data.paused) {
+			pm.CheckCollisions();
+			pm.Vibrate(deltaTime);
+		}
+		pm.Render(deltaTime);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -52,6 +67,22 @@ void Game::ProcessInput()
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS && !keyMap[GLFW_KEY_SPACE]) {
+		keyMap[GLFW_KEY_SPACE] = true;
+		eventHandler->FireGameEvent(GameEvents::PauseToggle);
+	}
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE && keyMap[GLFW_KEY_SPACE]) {
+		keyMap[GLFW_KEY_SPACE] = false;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !keyMap[GLFW_KEY_P]) {
+		keyMap[GLFW_KEY_P] = true;
+		eventHandler->FireGameEvent(GameEvents::PolyframeToggle);
+	}
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && keyMap[GLFW_KEY_P]) {
+		keyMap[GLFW_KEY_P] = false;
 	}
 }
 

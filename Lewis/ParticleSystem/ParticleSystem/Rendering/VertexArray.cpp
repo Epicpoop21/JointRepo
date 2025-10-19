@@ -10,7 +10,7 @@ VertexArray::~VertexArray()
 	glDeleteVertexArrays(1, &m_BufferID);
 }
 
-void VertexArray::AddBuffer(const VertexBufferLayout* layout, VertexBuffer* vb)
+void VertexArray::AddBuffer(const VertexBufferLayout& layout, VertexBuffer& vb)
 {
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR) {
@@ -18,7 +18,7 @@ void VertexArray::AddBuffer(const VertexBufferLayout* layout, VertexBuffer* vb)
 	}
 	Bind();
 
-	//vb.Bind();
+	vb.Bind();
 
 	const auto& elements = layout.GetElements();
 	unsigned int offset = 0;

@@ -3,7 +3,10 @@
 #include <vector>
 
 #include "../Rendering/Renderer.h"
+#include "../Events/EventHeader.h"
+
 #include "ParticleManager.h"
+#include "GameData.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -25,8 +28,11 @@ public:
 
 private:
 	GLFWwindow* window;
+	GameData data;
 	std::vector<float> vertices;
 	std::vector<unsigned int> indices;
 	Shader shader;
+	std::unordered_map<GLenum, bool> keyMap;
+	EventHandler* eventHandler;
 };
 

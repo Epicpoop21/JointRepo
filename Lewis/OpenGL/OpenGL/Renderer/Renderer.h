@@ -32,8 +32,7 @@ struct RenderLayout {
 	RenderLayout(VertexArray&& va, VertexBuffer&& vb, VertexBufferLayout&& vbl, IndexBuffer&& ib,
 		bool isCircle, float radius, xyCoord centre, glm::mat4 modelMatrix)
 		: va(std::move(va)), vb(std::move(vb)), vbl(std::move(vbl)), ib(std::move(ib)),
-		isCircle(isCircle), radius(radius), centre(centre), modelMatrix(modelMatrix) {
-	}
+		isCircle(isCircle), radius(radius), centre(centre), modelMatrix(modelMatrix) {}
 };
 
 class Renderer {

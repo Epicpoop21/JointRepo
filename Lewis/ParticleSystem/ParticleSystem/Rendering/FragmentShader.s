@@ -18,7 +18,7 @@ void main() {
 	r = sqrt(speed * speed);
 	b = sqrt(speed * speed);
 	r = r / initialVelocity;
-	b = (1 / b) * (initialVelocity / 6);
+	b = (1 / b) * (initialVelocity / 4);
 
 	FragColor = vec4(r, 0.0f, b, 1.0f);
 }

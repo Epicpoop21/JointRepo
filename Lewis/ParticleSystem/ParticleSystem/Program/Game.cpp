@@ -3,13 +3,14 @@
 Game::Game() 
 {
 	data = GameData();
-	data.screenX = 2560.0f;
-	data.screenY = 1440.0f;
+	data.paused = false;
+	data.screenX = 1920.0f;
+	data.screenY = 1080.0f;
 	SetupContext();
 	CreateWindow();
 	CheckGladInit();
 	glViewport(0, 0, data.screenX, data.screenY);
-	shader = Shader("Rendering/VertexShader.s", "Rendering/FragmentShader.s");
+	shader = Shader("Rendering/VertexShader.s", "Rendering/FragmentShader.s", nullptr);
 	eventHandler = EventHandler::GetInstance();
 }
 
@@ -25,7 +26,7 @@ int Game::StartUpdateLoop()
 
 	projection = glm::ortho(0.0f, data.screenX, 0.0f, data.screenY);
 
-	shader.Use();
+	shader.UseGraphics();
 	shader.SetMat4f("model", model);
 	shader.SetMat4f("view", view);
 	shader.SetMat4f("projection", projection);
@@ -42,6 +43,7 @@ int Game::StartUpdateLoop()
 	keyMap[GLFW_KEY_P] = false;
 
 	while (!glfwWindowShouldClose(window)) {
+
 		ProcessInput();
 
 		deltaTime = glfwGetTime() - lastTime;
@@ -50,7 +52,7 @@ int Game::StartUpdateLoop()
 		glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		shader.Use();
+		shader.UseGraphics();
 
 		if (!data.paused) {
 			pm.Vibrate(deltaTime);

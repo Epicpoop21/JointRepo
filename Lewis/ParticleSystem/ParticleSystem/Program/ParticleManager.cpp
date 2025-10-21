@@ -1,12 +1,12 @@
 #include "ParticleManager.h"
 
 ParticleManager::ParticleManager(Shader& shader, GameData* gameData) 
-	: particleRadius(1.0f), 
-	particleSpacing(0.0f), 
-	particleBounciness(0.88f), 
+	: particleRadius(1.5f), 
+	particleSpacing(2.0f), 
+	particleBounciness(0.9f), 
 	particleInitialVelocity(100.0f), 
-	particleRepelDistance(1.0f), 
-	mouseRadius(300.0f),
+	particleRepelDistance(5.0f), 
+	mouseRadius(1000.0f),
 	shader(shader), gameData(gameData)
 {
 	std::mt19937 rng(std::random_device{}());
@@ -44,13 +44,25 @@ ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
 		std::cout << particle.velocity.x << "    " << particle.velocity.y << "\n";
 	}*/
 
-	float quadVertices[] = {
-		-particleRadius, -particleRadius,
-		-particleRadius,  particleRadius,
-		 particleRadius, -particleRadius,
-		 particleRadius,  particleRadius
-	};
-
+	int quadSize = 0;
+	float quadVertices[8];
+	if (particleRadius > 0.5f) {
+		float temp[] = {
+			-particleRadius, -particleRadius,
+			-particleRadius,  particleRadius,
+			 particleRadius, -particleRadius,
+			 particleRadius,  particleRadius
+		};
+		memcpy(quadVertices, temp, sizeof(temp));
+		quadSize = sizeof(temp);
+	}
+	else {
+		float temp[] = {
+			particleRadius, particleRadius
+		};
+		memcpy(quadVertices, temp, sizeof(temp));
+		quadSize = sizeof(temp);
+	} 
 
 	VertexArray va;
 	va.Bind();
@@ -80,7 +92,7 @@ ParticleManager::~ParticleManager()
 
 void ParticleManager::Setup()
 {
-	shader.Use();
+	shader.UseGraphics();
 	shader.SetFloat("radius", particleRadius);
 	shader.SetFloat("initialVelocity", particleInitialVelocity);
 }
@@ -90,12 +102,19 @@ void ParticleManager::Render()
 	for (Particle& particle : particles) {
 		instanceData.push_back(glm::vec3(particle.coords, glm::length(particle.velocity)));
 	}
+
 	renderObjects->instanceVB.UpdateData(instanceData.data(), instanceData.size() * sizeof(glm::vec3), GL_DYNAMIC_DRAW);
 
 	renderObjects->va.Bind();
 	renderObjects->ib.Bind();
 
-	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instanceData.size());
+	if (particleRadius > 0.5f) {
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instanceData.size());
+	}
+	else {
+		glEnable(GL_PROGRAM_POINT_SIZE);
+		glDrawArraysInstanced(GL_POINTS, 0, 1, instanceData.size());
+	} 
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR) {
 		std::cout << "OpenGL error: " << err << std::endl;
@@ -108,17 +127,18 @@ void ParticleManager::Vibrate(float deltaTime)
 		//particle.velocity.y = particle.velocity.y - 300.0f * deltaTime;
 		particle.coords += particle.velocity * deltaTime;
 		if (particle.coords.x + particleRadius > gameData->screenX - particleRepelDistance || particle.coords.x - particleRadius < 0.0f + particleRepelDistance) {
-			particle.velocity.x *= -0.9f;
+			particle.velocity.x *= -1.0f;
 		} 
+		if (particle.coords.y + particleRadius > gameData->screenY - particleRepelDistance || particle.coords.y - particleRadius < 0.0f + particleRepelDistance) {
+			particle.velocity.y *= -1.0f;
+		}
 		while (particle.coords.x + particleRadius > gameData->screenX - particleRepelDistance) {
 			particle.coords.x -= 10.0f;
 		}
 		while (particle.coords.x - particleRadius < 0.0f + particleRepelDistance) {
 			particle.coords.x += 10.0f;
 		}
-		if (particle.coords.y + particleRadius > gameData->screenY - particleRepelDistance || particle.coords.y - particleRadius < 0.0f + particleRepelDistance) {
-			particle.velocity.y *= -0.9f;
-		}
+
 		while (particle.coords.y + particleRadius > gameData->screenY - particleRepelDistance) {
 			particle.coords.y -= 10.0f;
 		}
@@ -203,7 +223,7 @@ void ParticleManager::Click(const Event<GameEvents>& gameEvent)
 	float explosionStrength = 500.0f;
 	//std::cout << "X: " << gameData->mousePos.x << " Y: " << gameData->mousePos.y << "\n";
 	for (Particle& particle : particles) {
-		glm::vec2 toParticle = particle.coords - centre;
+		glm::vec2 toParticle =  centre - particle.coords;
 		float dist2 = glm::dot(toParticle, toParticle);
 
 

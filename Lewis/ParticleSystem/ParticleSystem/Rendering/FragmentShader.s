@@ -1,22 +1,22 @@
 #version 440 core
 
-in vec2 circleCentre;
-in float speed;
+in vec2 vCircleCentre;
+in float vSpeed;
+
 uniform float radius;
-uniform vec3 colour;
 uniform float initialVelocity;
 
 out vec4 FragColor;
 
 void main() {
-	if (pow(gl_FragCoord.x - circleCentre.x, 2) + pow(gl_FragCoord.y - circleCentre.y, 2) > pow(radius, 2)) {
-		discard;
-	}
+	vec2 fragPos = gl_FragCoord.xy;
+	float dist = length(fragPos - vCircleCentre);
+	if (dist > radius) discard;
 
 	float r, b;
 
-	r = sqrt(speed * speed);
-	b = sqrt(speed * speed);
+	r = sqrt(vSpeed * vSpeed);
+	b = sqrt(vSpeed * vSpeed);
 	r = r / initialVelocity;
 	b = (1 / b) * (initialVelocity / 4);
 

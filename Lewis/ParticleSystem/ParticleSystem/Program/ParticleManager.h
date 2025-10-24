@@ -14,6 +14,7 @@ struct Particle {
 	glm::vec2 coords = glm::vec2(0.0f, 0.0f);
 	glm::vec2 velocity = glm::vec2(0.0f, 0.0f);
 };
+static_assert(sizeof(Particle) == 16, "Particle size mismatch");
 
 class ParticleManager
 {
@@ -22,7 +23,7 @@ public:
 	~ParticleManager();
 
 	void Setup();
-	void Render();
+	void Render(float deltaTime);
 	void Vibrate(float deltaTime);
 	void CheckCollisions();
 private:
@@ -48,7 +49,6 @@ private:
 	float cellSize;
 	std::vector<Particle> particles;
 	std::unordered_map<int64_t, std::vector<int>> grid;
-	std::vector<glm::vec3> instanceData;
 	std::vector<unsigned int> indices;
 	RenderInfo* renderObjects = nullptr;
 	EventHandler* eventHandler;

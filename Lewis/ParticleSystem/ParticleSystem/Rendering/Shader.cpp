@@ -54,6 +54,10 @@ void Shader::BuildGraphics(const char* vertexShaderFilePath, const char* frageme
 
 	glDeleteShader(vertexProgram);
 	glDeleteShader(fragmentProgram);
+
+	glUseProgram(m_GraphicsID);
+	glUseProgram(0);
+	glFinish();
 }
 
 void Shader::BuildCompute(const char* computShaderFilePath)
@@ -61,6 +65,7 @@ void Shader::BuildCompute(const char* computShaderFilePath)
 	if (computShaderFilePath == nullptr) {
 		return;
 	}
+
 	std::string computeSource;
 	std::ifstream computeSourceFile;
 	computeSourceFile.exceptions(std::ifstream::failbit | std::fstream::badbit);
@@ -90,13 +95,24 @@ void Shader::BuildCompute(const char* computShaderFilePath)
 	glLinkProgram(m_ComputeID);
 	CheckCompilerIssues(m_ComputeID, "PROGRAM");
 
-	glDeleteShader(computeProgram);
+	UseCompute();
+	glDispatchCompute(1, 1, 1);
+	glMemoryBarrier(GL_ALL_BARRIER_BITS);
+	glUseProgram(0);
+	glFinish();
 }
 
 Shader::Shader(const char* vertexShaderFilePath, const char* fragementShaderFilePath, const char* computeShaderFilePath)
 {
+	m_ComputeID = 0;
+	m_GraphicsID = 0;
+	currentShaderBound = NoneBound;
+
 	BuildGraphics(vertexShaderFilePath, fragementShaderFilePath);
 	BuildCompute(computeShaderFilePath);
+
+	std::cout << "Graphics shader ID is: " << m_GraphicsID << "\n";
+	std::cout << "Compute shader ID is: " << m_ComputeID << "\n";
 }
 
 Shader::~Shader()
@@ -106,54 +122,80 @@ Shader::~Shader()
 
 void Shader::UseGraphics()
 {
-	glUseProgram(m_GraphicsID);
+	if (m_GraphicsID != 0) {
+		glUseProgram(m_GraphicsID);
+	}
+	else {
+		std::cout << "Failed to use graphics program \n";
+	}
 	currentShaderBound = GraphicsShader;
 }
 
 void Shader::UseCompute()
 {
-	glUseProgram(m_ComputeID);
+	if (m_ComputeID != 0) {
+		glUseProgram(m_ComputeID);
+	}
+	else {
+		std::cout << "Failed to use compute program \n";
+	}
 	currentShaderBound = ComputeShader;
 }
 
 void Shader::SetBool(const std::string& uniformName, bool v0)
 {
-	glUniform1i(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0);
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniform1i(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0);
+	}
 }
 
 void Shader::SetFloat(const std::string& uniformName, float v0)
 {
-	glUniform1f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0);
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniform1f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0);
+	}
 }
 
 void Shader::SetInt(const std::string& uniformName, int v0)
 {
-	glUniform1i(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0);
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniform1i(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0);
+	}
 }
 
 void Shader::SetVec2f(const std::string& uniformName, float v0, float v1)
 {
-	glUniform2f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0, v1);
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniform2f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0, v1);
+	}
 }
 
 void Shader::SetVec2fv(const std::string& uniformName, int size, float* value)
 {
-	glUniform2fv(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), size, value);
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniform2fv(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), size, value);
+	}
 }
 
 void Shader::SetVec3f(const std::string& uniformName, float v0, float v1, float v2)
 {
-	glUniform3f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0, v1, v2);
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniform3f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0, v1, v2);
+	}
 }
 
 void Shader::SetVec4f(const std::string& uniformName, float v0, float v1, float v2, float v3)
 {
-	glUniform4f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0, v1, v2, v3);
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniform4f(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), v0, v1, v2, v3);
+	}
 }
 
 void Shader::SetMat4f(const std::string& uniformName, glm::mat4 mat)
 {
-	glUniformMatrix4fv(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+	if (ReturnShaderID(currentShaderBound) != 0) {
+		glUniformMatrix4fv(glGetUniformLocation(ReturnShaderID(currentShaderBound), uniformName.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+	}
 }
 
 unsigned int Shader::ReturnShaderID(ShaderType type)
@@ -163,6 +205,9 @@ unsigned int Shader::ReturnShaderID(ShaderType type)
 	}
 	else if (type == GraphicsShader) {
 		return m_GraphicsID;
+	}
+	else {
+		return 0;
 	}
 }
 

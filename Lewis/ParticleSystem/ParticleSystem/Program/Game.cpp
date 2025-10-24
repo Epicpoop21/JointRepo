@@ -10,7 +10,7 @@ Game::Game()
 	CreateWindow();
 	CheckGladInit();
 	glViewport(0, 0, data.screenX, data.screenY);
-	shader = Shader("Rendering/VertexShader.s", "Rendering/FragmentShader.s", nullptr);
+	shader = Shader("Rendering/VertexShader.s", "Rendering/FragmentShader.s", "Rendering/ComputeShader.s");
 	eventHandler = EventHandler::GetInstance();
 }
 
@@ -58,7 +58,7 @@ int Game::StartUpdateLoop()
 			pm.Vibrate(deltaTime);
 			//pm.CheckCollisions();
 		}
-		pm.Render();
+		pm.Render(deltaTime);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

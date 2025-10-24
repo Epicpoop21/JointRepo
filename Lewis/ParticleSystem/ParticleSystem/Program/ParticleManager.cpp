@@ -1,8 +1,8 @@
 #include "ParticleManager.h"
 
 ParticleManager::ParticleManager(Shader& shader, GameData* gameData) 
-	: particleRadius(1.5f), 
-	particleSpacing(2.0f), 
+	: particleRadius(5.0f), 
+	particleSpacing(15.0f), 
 	particleBounciness(0.9f), 
 	particleInitialVelocity(100.0f), 
 	particleRepelDistance(5.0f), 
@@ -36,10 +36,6 @@ ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
 		1, 2, 3
 	};
 
-	for (Particle& particle : particles) {
-		instanceData.push_back(glm::vec3(particle.coords, glm::length(particle.velocity)));
-	}
-
 	/*for (Particle& particle : particles) {
 		std::cout << particle.velocity.x << "    " << particle.velocity.y << "\n";
 	}*/
@@ -68,19 +64,14 @@ ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
 	va.Bind();
 	VertexBufferLayout vbl1;
 	VertexBufferLayout vbl2;
-
+	ShaderStorageBuffer ssb = ShaderStorageBuffer(particles.data(), particles.size() * sizeof(Particle));
 	IndexBuffer ib = IndexBuffer(indices.data(), indices.size() * sizeof(unsigned int));
 
 	VertexBuffer quadVBO = VertexBuffer(quadVertices, sizeof(quadVertices), GL_STATIC_DRAW);
 	vbl1.Push<float>(2);
 	va.AddBuffer(vbl1, quadVBO);
 
-	VertexBuffer instanceVB = VertexBuffer(instanceData.data(), instanceData.size() * sizeof(glm::vec3), GL_DYNAMIC_DRAW);
-	vbl2.Push<float>(3);
-	va.AddBuffer(vbl2, instanceVB);
-	glVertexAttribDivisor(1, 1);
-
-	renderObjects = new RenderInfo{ std::move(va), std::move(quadVBO), std::move(instanceVB), std::move(ib), std::move(vbl1), std::move(vbl2)};
+	renderObjects = new RenderInfo{ std::move(va), std::move(quadVBO), std::move(ib), std::move(vbl1), std::move(vbl2), std::move(ssb)};
 }
 
 ParticleManager::~ParticleManager()
@@ -95,35 +86,44 @@ void ParticleManager::Setup()
 	shader.UseGraphics();
 	shader.SetFloat("radius", particleRadius);
 	shader.SetFloat("initialVelocity", particleInitialVelocity);
+	shader.SetVec2f("screenDimention", gameData->screenX, gameData->screenY);
+	shader.UseCompute(); 
 }
 
-void ParticleManager::Render()
+void ParticleManager::Render(float deltaTime)
 {
-	for (Particle& particle : particles) {
-		instanceData.push_back(glm::vec3(particle.coords, glm::length(particle.velocity)));
-	}
+	GLenum err;
+	while ((err = glGetError()) != GL_NO_ERROR) {}
 
-	renderObjects->instanceVB.UpdateData(instanceData.data(), instanceData.size() * sizeof(glm::vec3), GL_DYNAMIC_DRAW);
+	while ((err = glGetError()) != GL_NO_ERROR) {
+		std::cout << "OpenGL error: " << err << std::endl;
+	}
+	renderObjects->ssb.Bind();
+
+	shader.SetFloat("deltaTime", deltaTime);
+	shader.SetVec2f("screenDimention", gameData->screenX, gameData->screenY);
+	shader.SetFloat("repelDistance", particleRepelDistance);
+	shader.SetFloat("radius", particleRadius);
+
+	unsigned int numGroups = (particles.size() + 256 - 1) / 256;
+	glDispatchCompute(numGroups, 1, 1);
+	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
 	renderObjects->va.Bind();
 	renderObjects->ib.Bind();
 
 	if (particleRadius > 0.5f) {
-		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instanceData.size());
+		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particles.size());
 	}
 	else {
 		glEnable(GL_PROGRAM_POINT_SIZE);
-		glDrawArraysInstanced(GL_POINTS, 0, 1, instanceData.size());
+		glDrawArraysInstanced(GL_POINTS, 0, 1, particles.size());
 	} 
-	GLenum err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		std::cout << "OpenGL error: " << err << std::endl;
-	}
 }
 
 void ParticleManager::Vibrate(float deltaTime)
 {
-	for (Particle& particle : particles) {
+	/*for (Particle& particle : particles) {
 		//particle.velocity.y = particle.velocity.y - 300.0f * deltaTime;
 		particle.coords += particle.velocity * deltaTime;
 		if (particle.coords.x + particleRadius > gameData->screenX - particleRepelDistance || particle.coords.x - particleRadius < 0.0f + particleRepelDistance) {
@@ -147,9 +147,9 @@ void ParticleManager::Vibrate(float deltaTime)
 		}
 		if (glm::length(particle.velocity) > particleInitialVelocity * 10) {
 			particle.velocity = GenerateRandomVelocity();
-		} 
+		}  
 	}
-	instanceData.erase(instanceData.begin(), instanceData.end());
+	instanceData.erase(instanceData.begin(), instanceData.end());*/
 }
 
 void ParticleManager::CheckCollisions()
@@ -237,7 +237,6 @@ void ParticleManager::Click(const Event<GameEvents>& gameEvent)
 			//std::cout << "X velocity: " << particle.velocity.x << "Y velocity: " << particle.velocity.y << "\n";
 		}
 	}
-	Render();
 }
 
 glm::vec2 ParticleManager::GenerateRandomVelocity()

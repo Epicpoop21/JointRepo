@@ -109,7 +109,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)dependencies\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;user32.lib;gdi32.lib;shell32.lib;advapi32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,6 +141,7 @@
     <ClCompile Include="Program\GameData.cpp" />
     <ClCompile Include="Rendering\Renderer.cpp" />
     <ClCompile Include="Rendering\Shader.cpp" />
+    <ClCompile Include="Rendering\ShaderStorageBuffer.cpp" />
     <ClCompile Include="Rendering\VertexBuffer.cpp" />
     <ClCompile Include="Rendering\VertexArray.cpp" />
   </ItemGroup>
@@ -156,11 +157,13 @@
     <ClInclude Include="Program\GameData.h" />
     <ClInclude Include="Rendering\Renderer.h" />
     <ClInclude Include="Rendering\Shader.h" />
+    <ClInclude Include="Rendering\ShaderStorageBuffer.h" />
     <ClInclude Include="Rendering\VertexBuffer.h" />
     <ClInclude Include="Rendering\VertexArray.h" />
     <ClInclude Include="Rendering\VertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Rendering\ComputeShader.s" />
     <None Include="Rendering\FragmentShader.s" />
     <None Include="Rendering\VertexShader.s" />
   </ItemGroup>

@@ -48,6 +48,9 @@
     <ClCompile Include="Events\EventHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rendering\ShaderStorageBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program\Game.h">
@@ -92,9 +95,13 @@
     <ClInclude Include="Events\EventHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rendering\ShaderStorageBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Rendering\VertexShader.s" />
     <None Include="Rendering\FragmentShader.s" />
+    <None Include="Rendering\ComputeShader.s" />
   </ItemGroup>
 </Project>

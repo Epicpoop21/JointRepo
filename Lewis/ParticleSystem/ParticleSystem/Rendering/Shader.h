@@ -7,7 +7,8 @@
 
 enum ShaderType {
 	ComputeShader,
-	GraphicsShader
+	GraphicsShader,
+	NoneBound
 };
 
 class Shader

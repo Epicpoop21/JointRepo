@@ -15,6 +15,7 @@ private:
 	void InvertPause(const Event<GameEvents>& event);
 	void PolyframeToggle(const Event<GameEvents>& event);
 	void Click(const Event<GameEvents>& event);
+	void Release(const Event<GameEvents>& event);
 public:
 	int elapasedTime;
 	time_t startTime;
@@ -25,6 +26,7 @@ public:
 
 	float screenY;
 	float screenX;
+	bool mouseDown;
 private:
 	EventHandler* eventHandler;
 };

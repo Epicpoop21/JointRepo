@@ -1,20 +1,17 @@
 #include "ParticleManager.h"
 
-ParticleManager::ParticleManager(Shader& shader, GameData* gameData) 
-	: particleRadius(5.0f), 
-	particleSpacing(15.0f), 
-	particleBounciness(0.9f), 
-	particleInitialVelocity(100.0f), 
-	particleRepelDistance(5.0f), 
+ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
+	: particleRadius(1.0f),
+	particleSpacing(3.0f),
+	particleBounciness(0.9f),
+	particleInitialVelocity(100.0f),
+	particleRepelDistance(5.0f),
 	mouseRadius(1000.0f),
+	explosionStrength(4000.0f),
 	shader(shader), gameData(gameData)
 {
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_real_distribution<float>vel(-particleInitialVelocity, particleInitialVelocity);
-
-	EventHandler* eventHandler = EventHandler::GetInstance();
-	eventHandler->GameEventDispatcher.AddListener(GameEvents::MouseIsDown,
-		std::bind(&ParticleManager::Click, this, std::placeholders::_1));
 
 	minDistanceBetweenParticles = particleRadius * 2.0f + particleRepelDistance;
 	cellSize = particleRadius * 2.5f;
@@ -79,46 +76,42 @@ ParticleManager::~ParticleManager()
 	delete renderObjects;
 }
 
-
-
 void ParticleManager::Setup()
 {
 	shader.UseGraphics();
 	shader.SetFloat("radius", particleRadius);
 	shader.SetFloat("initialVelocity", particleInitialVelocity);
 	shader.SetVec2f("screenDimention", gameData->screenX, gameData->screenY);
-	shader.UseCompute(); 
+
+	shader.UseCompute();
+	shader.SetFloat("explosionStrength", explosionStrength);
+	shader.SetFloat("mouseRadius", mouseRadius);
+	shader.SetFloat("particleInitialVelocity", particleInitialVelocity);
+	shader.SetFloat("particleRepelDistance", particleRepelDistance);
+	shader.SetFloat("particleRadius", particleRadius);
 }
 
 void ParticleManager::Render(float deltaTime)
 {
-	GLenum err;
-	while ((err = glGetError()) != GL_NO_ERROR) {}
-
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		std::cout << "OpenGL error: " << err << std::endl;
-	}
+	shader.UseCompute();
 	renderObjects->ssb.Bind();
 
 	shader.SetFloat("deltaTime", deltaTime);
 	shader.SetVec2f("screenDimention", gameData->screenX, gameData->screenY);
 	shader.SetFloat("repelDistance", particleRepelDistance);
 	shader.SetFloat("radius", particleRadius);
+	shader.SetBool("clicking", gameData->mouseDown);
+	shader.SetVec2f("mousePos", gameData->mousePos.x, gameData->mousePos.y);
 
 	unsigned int numGroups = (particles.size() + 256 - 1) / 256;
 	glDispatchCompute(numGroups, 1, 1);
 	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 
+	shader.UseGraphics();
 	renderObjects->va.Bind();
 	renderObjects->ib.Bind();
 
-	if (particleRadius > 0.5f) {
-		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particles.size());
-	}
-	else {
-		glEnable(GL_PROGRAM_POINT_SIZE);
-		glDrawArraysInstanced(GL_POINTS, 0, 1, particles.size());
-	} 
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, particles.size());
 }
 
 void ParticleManager::Vibrate(float deltaTime)
@@ -214,28 +207,6 @@ void ParticleManager::BuildSpatialHash()
 		glm::ivec2 cell = GetCellCoordinates(particles[i].coords, cellSize);
 		int64_t hash = HashCell(cell.x, cell.y);
 		grid[hash].push_back(i);
-	}
-}
-
-void ParticleManager::Click(const Event<GameEvents>& gameEvent)
-{
-	glm::vec2 centre = gameData->mousePos;
-	float explosionStrength = 500.0f;
-	//std::cout << "X: " << gameData->mousePos.x << " Y: " << gameData->mousePos.y << "\n";
-	for (Particle& particle : particles) {
-		glm::vec2 toParticle =  centre - particle.coords;
-		float dist2 = glm::dot(toParticle, toParticle);
-
-
-		if (dist2 < mouseRadius * mouseRadius) {
-			float dist = glm::sqrt(dist2);
-			if (dist > 0.0f) {
-				glm::vec2 normalised = toParticle / dist;
-				float force = (1.0f - dist / mouseRadius) * explosionStrength;
-				particle.velocity += normalised * force;
-			}
-			//std::cout << "X velocity: " << particle.velocity.x << "Y velocity: " << particle.velocity.y << "\n";
-		}
 	}
 }
 

@@ -4,8 +4,8 @@ Game::Game()
 {
 	data = GameData();
 	data.paused = false;
-	data.screenX = 1920.0f;
-	data.screenY = 1080.0f;
+	data.screenX = 2560.0f;
+	data.screenY = 1440.0f;
 	SetupContext();
 	CreateWindow();
 	CheckGladInit();
@@ -36,18 +36,31 @@ int Game::StartUpdateLoop()
 	ParticleManager pm(shader, &data);
 	pm.Setup();
 
-	float lastTime = glfwGetTime();
+	float currentTime = glfwGetTime();
+	float previousTime = glfwGetTime();
 	float deltaTime;
+	int frameCount = 0;
 
 	keyMap[GLFW_KEY_SPACE] = false;
 	keyMap[GLFW_KEY_P] = false;
+	keyMap[GLFW_MOUSE_BUTTON_LEFT] = false;
 
 	while (!glfwWindowShouldClose(window)) {
 
 		ProcessInput();
 
-		deltaTime = glfwGetTime() - lastTime;
-		lastTime = glfwGetTime();
+		deltaTime = glfwGetTime() - currentTime;
+		currentTime = glfwGetTime();
+		frameCount++;
+
+		if (currentTime - previousTime >= 1.0)
+		{
+			// Display the frame count here any way you want.
+			std::cout << "FPS IS: " << frameCount << "\n";
+
+			frameCount = 0;
+			previousTime = currentTime;
+		}
 
 		glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -90,8 +103,11 @@ void Game::ProcessInput()
 	}
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 		EventHandler::GetInstance()->FireGameEvent(GameEvents::MouseIsDown);
+		keyMap[GLFW_MOUSE_BUTTON_LEFT] = true;
 	}
-	
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE && keyMap[GLFW_MOUSE_BUTTON_LEFT]) {
+		EventHandler::GetInstance()->FireGameEvent(GameEvents::MouseIsUp);
+	}
 }
 
 void Game::SetupContext()

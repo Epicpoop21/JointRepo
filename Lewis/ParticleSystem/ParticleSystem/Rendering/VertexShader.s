@@ -29,15 +29,8 @@ void main() {
 
     vec4 worldPosition;
 
-    if (radius > 0.5) {
-        vec2 worldPos = quadPos + p.coords;
-        worldPosition = vec4(worldPos, 0.0, 1.0);
-    } else {
-        // flip y if necessary
-        vec2 flipped = vec2(p.coords.x, screenDimention.y - p.coords.y);
-        worldPosition = vec4(flipped, 0.0, 1.0);
-        gl_PointSize = max(radius * 2.0, 1.0);
-    }
+    vec2 worldPos = quadPos + p.coords;
+    worldPosition = vec4(worldPos, 0.0, 1.0);
 
     gl_Position = projection * view * model * worldPosition;
 }

@@ -31,7 +31,6 @@ private:
 	inline int64_t HashCell(int x, int y);
 	inline glm::ivec2 GetCellCoordinates(const glm::vec2& pos, float cellSize);
 	void BuildSpatialHash();
-	void Click(const Event<GameEvents>& gameEvent);
 	glm::vec2 GenerateRandomVelocity();
 public:
 
@@ -41,6 +40,7 @@ private:
 	float particleInitialVelocity;
 	float particleRepelDistance;
 	float mouseRadius;
+	float explosionStrength;
 
 	float* quadVertices;
 	Shader& shader;

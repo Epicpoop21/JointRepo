@@ -1,6 +1,6 @@
 #include "GameData.h"
 
-GameData::GameData() : startTime(time(NULL)), elapasedTime(0), mousePos(0.0f)
+GameData::GameData() : startTime(time(NULL)), elapasedTime(0), mousePos(0.0f), mouseDown(false)
 {
 	screenX = 0.0f;
 	screenY = 0.0f;
@@ -15,6 +15,9 @@ GameData::GameData() : startTime(time(NULL)), elapasedTime(0), mousePos(0.0f)
 
 	eventHandler->GameEventDispatcher.AddListener(GameEvents::MouseIsDown,
 		std::bind(&GameData::Click, this, std::placeholders::_1));
+
+	eventHandler->GameEventDispatcher.AddListener(GameEvents::MouseIsUp,
+		std::bind(&GameData::Release, this, std::placeholders::_1));
 }
 
 GameData::~GameData()
@@ -43,8 +46,14 @@ void GameData::PolyframeToggle(const Event<GameEvents>& event)
 
 void GameData::Click(const Event<GameEvents>& event)
 {
+	mouseDown = true;
 	double mousePosX, mousePosY;
 	glfwGetCursorPos(glfwGetCurrentContext(), &mousePosX, &mousePosY);
 	mousePos.x = mousePosX;
 	mousePos.y = -mousePosY + screenY;
+}
+
+void GameData::Release(const Event<GameEvents>& event)
+{
+	mouseDown = false;
 }

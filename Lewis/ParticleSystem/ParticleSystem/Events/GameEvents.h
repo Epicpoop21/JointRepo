@@ -4,7 +4,8 @@
 enum class GameEvents {
 	PauseToggle,
 	PolyframeToggle,
-	MouseIsDown
+	MouseIsDown, 
+	MouseIsUp
 };
 
 class PauseToggleEvent : public Event<GameEvents> {
@@ -23,4 +24,10 @@ class MouseIsDownEvent : public Event<GameEvents> {
 public:
 	MouseIsDownEvent() : Event<GameEvents>(GameEvents::MouseIsDown, "MouseIsDown") {}
 	virtual ~MouseIsDownEvent() {}
+};
+
+class MouseIsUpEvent : public Event<GameEvents> {
+public:
+	MouseIsUpEvent() : Event<GameEvents>(GameEvents::MouseIsUp, "MouseIsUp") {}
+	virtual ~MouseIsUpEvent() {}
 };

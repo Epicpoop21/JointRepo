@@ -77,6 +77,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,6 +95,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,6 +113,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +131,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)dependencies\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game\Chunk.cpp" />
+    <ClCompile Include="game\Block.cpp" />
+    <ClCompile Include="rendering\Texture.cpp" />
+    <ClCompile Include="util\GameData.cpp" />
+    <ClCompile Include="util\Game.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="util\Input.cpp" />
     <ClCompile Include="rendering\Camera.cpp" />
     <ClCompile Include="rendering\CubeRenderer.cpp" />
     <ClCompile Include="rendering\IndexBuffer.cpp" />
@@ -149,9 +159,16 @@
     <ClCompile Include="rendering\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game\Chunk.h" />
+    <ClInclude Include="game\Block.h" />
+    <ClInclude Include="rendering\Texture.h" />
+    <ClInclude Include="util\GameData.h" />
+    <ClInclude Include="util\Game.h" />
+    <ClInclude Include="util\Input.h" />
     <ClInclude Include="rendering\Camera.h" />
     <ClInclude Include="rendering\CubeRenderer.h" />
     <ClInclude Include="rendering\IndexBuffer.h" />
+    <ClInclude Include="rendering\RenderingHeaders.h" />
     <ClInclude Include="rendering\Shader.h" />
     <ClInclude Include="rendering\VertexBuffer.h" />
     <ClInclude Include="rendering\VertexBufferLayout.h" />

@@ -1,6 +1,7 @@
 #include "Camera.h"
+#include <math.h>
 
-Camera::Camera(Shader& shader) : shader(shader)
+Camera::Camera() : input(Input::GetInstance())
 {
 	fov = 45.0f;
 
@@ -18,30 +19,39 @@ Camera::Camera(Shader& shader) : shader(shader)
 
 Camera::~Camera()
 {
+
 }
 
 void Camera::Update()
 {
+	if (input->keyStateMap[GLFW_KEY_W]) Forward();
+	if (input->keyStateMap[GLFW_KEY_D]) Right();
+	if (input->keyStateMap[GLFW_KEY_S]) Backward();
+	if (input->keyStateMap[GLFW_KEY_A]) Left();
+	if (input->keyStateMap[GLFW_KEY_LEFT_SHIFT]) cameraSpeed = 4.0f;
+	if (!input->keyStateMap[GLFW_KEY_LEFT_SHIFT]) cameraSpeed = 2.0f;
+
 	MoveCamera();
+	ScrollCamera();
 
 	float currentFrame = glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
+	//std::cout << std::round((1.f / deltaTime)) << std::endl;
+
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-	shader.SetMat4f("view", view);
 	projection = glm::perspective(glm::radians(fov), screenX / screenY, 0.1f, 500.0f);
-	shader.SetMat4f("projection", projection);
 }
 
 void Camera::mouse_callback(GLFWwindow* window, double xPos, double yPos)
 {
-	xPos = xPos;
-	yPos = yPos;
+	Camera::xPos = xPos;
+	Camera::yPos = yPos;
 }
 
 void Camera::scroll_callback(GLFWwindow* window, double xOffset, double yOffset) {
-	yOffset = yOffset;
+	Camera::yOffset = yOffset;
 }
 
 void Camera::ScrollCamera() {
@@ -64,7 +74,7 @@ void Camera::MoveCamera()
 	yaw += xOffset;
 	pitch += yOffset;
 
-	if (pitch > 89.0f) pitch = 98.0f;
+	if (pitch > 89.0f) pitch = 89.0f;
 	if (pitch < -89.0f) pitch = -89.0f;
 
 	glm::vec3 direction;
@@ -77,20 +87,20 @@ void Camera::MoveCamera()
 
 void Camera::Forward()
 {
-	cameraPos += cameraSpeed * cameraFront;
+	cameraPos += cameraSpeed * deltaTime * cameraFront;
 }
 
 void Camera::Backward()
 {
-	cameraPos -= cameraSpeed * cameraFront;
+	cameraPos -= cameraSpeed * deltaTime * cameraFront;
 }
 
 void Camera::Left()
 {
-	cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * deltaTime * cameraSpeed;
 }
 
 void Camera::Right()
 {
-	cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * deltaTime * cameraSpeed;
 }

@@ -14,6 +14,7 @@
 class Shader
 {
 public:
+	Shader() = default;
 	Shader(const char* vertexShaderFilePath, const char* fragmentShaderFilePath);
 	~Shader();
 

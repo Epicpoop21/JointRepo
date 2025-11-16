@@ -1,0 +1,28 @@
+#pragma once
+
+#include <optional>
+
+#include "Input.h"
+#include "../rendering/RenderingHeaders.h"
+
+class Game
+{
+public:
+	Game();
+	~Game();
+	void Update();
+
+private:
+	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+public:
+
+private:
+	GLFWwindow* window;
+	Shader shader;
+	Input input;
+	std::optional<CubeRenderer> cr;
+	inline static Camera cam;
+
+	inline static bool polyframe;
+};
+

@@ -4,7 +4,9 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int bytes)
 {
 	glGenBuffers(1, &m_ObjectID);
 	Bind();
-	glBufferData(GL_ARRAY_BUFFER, bytes, data, GL_STATIC_DRAW);
+	if (data != nullptr && bytes != 0) {
+		glBufferData(GL_ARRAY_BUFFER, bytes, data, GL_STATIC_DRAW);
+	}
 }
 
 VertexBuffer::~VertexBuffer()
@@ -20,4 +22,11 @@ void VertexBuffer::Bind()
 void VertexBuffer::Unbind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void VertexBuffer::UpdateData(const void* data, unsigned int bytes)
+{
+	Bind();
+	glBufferData(GL_ARRAY_BUFFER, bytes, data, GL_STATIC_DRAW);
+	Unbind();
 }

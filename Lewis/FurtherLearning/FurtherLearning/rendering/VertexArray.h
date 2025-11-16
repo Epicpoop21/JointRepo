@@ -9,7 +9,7 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void AddBuffer(VertexBuffer vb, VertexBufferLayout layout);
+	void AddBuffer(VertexBuffer &vb, VertexBufferLayout& layout);
 	void Bind();
 	static void Unbind();
 private:
@@ -18,5 +18,6 @@ public:
 
 private:
 	unsigned int m_ObjectID;
+	unsigned int m_Index;
 };
 

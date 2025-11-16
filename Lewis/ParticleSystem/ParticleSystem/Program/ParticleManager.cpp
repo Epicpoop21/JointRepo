@@ -1,7 +1,7 @@
 #include "ParticleManager.h"
 
 ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
-	: particleRadius(1.0f),
+	: particleRadius(5.0f),
 	particleSpacing(3.0f),
 	particleBounciness(0.9f),
 	particleInitialVelocity(100.0f),

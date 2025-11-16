@@ -10,7 +10,7 @@ struct VertexBufferElement {
 	static unsigned int GetCount(unsigned int type) {
 		switch (type) {
 			case GL_FLOAT: return 4;
-			case GL_UNSIGNED_INT: return 1;
+			case GL_UNSIGNED_INT: return 4;
 		}
 	}
 };

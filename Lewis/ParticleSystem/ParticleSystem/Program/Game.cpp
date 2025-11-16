@@ -4,8 +4,8 @@ Game::Game()
 {
 	data = GameData();
 	data.paused = false;
-	data.screenX = 2560.0f;
-	data.screenY = 1440.0f;
+	data.screenX = 1920.0f;
+	data.screenY = 1080.0f;
 	SetupContext();
 	CreateWindow();
 	CheckGladInit();
@@ -69,7 +69,7 @@ int Game::StartUpdateLoop()
 
 		if (!data.paused) {
 			pm.Vibrate(deltaTime);
-			//pm.CheckCollisions();
+			pm.CheckCollisions();
 		}
 		pm.Render(deltaTime);
 

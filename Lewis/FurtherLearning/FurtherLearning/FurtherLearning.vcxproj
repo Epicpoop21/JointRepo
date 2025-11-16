@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="rendering\Camera.cpp" />
+    <ClCompile Include="rendering\CubeRenderer.cpp" />
     <ClCompile Include="rendering\IndexBuffer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rendering\Shader.cpp" />
@@ -147,6 +149,8 @@
     <ClCompile Include="rendering\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="rendering\Camera.h" />
+    <ClInclude Include="rendering\CubeRenderer.h" />
     <ClInclude Include="rendering\IndexBuffer.h" />
     <ClInclude Include="rendering\Shader.h" />
     <ClInclude Include="rendering\VertexBuffer.h" />

@@ -9,6 +9,7 @@ public:
 
 	void Bind();
 	static void Unbind();
+	void UpdateData(const void* data, unsigned int bytes);
 private:
 
 public:

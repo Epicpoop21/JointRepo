@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game\CubeTextures.cpp" />
     <ClCompile Include="game\Chunk.cpp" />
     <ClCompile Include="game\Block.cpp" />
     <ClCompile Include="rendering\Texture.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="rendering\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game\CubeTextures.h" />
     <ClInclude Include="game\Chunk.h" />
     <ClInclude Include="game\Block.h" />
     <ClInclude Include="rendering\Texture.h" />

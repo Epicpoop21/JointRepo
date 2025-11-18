@@ -21,7 +21,7 @@ private:
 	Shader shader;
 	Input input;
 	std::optional<CubeRenderer> cr;
-	inline static Camera cam;
+	Camera* cam;
 
 	inline static bool polyframe;
 };

@@ -1,19 +1,19 @@
 #include "Chunk.h"
 
-Chunk::Chunk() : vb(nullptr, 0), ib(nullptr, 0), faceNumber(0), texture("../res/textures/Stone.png")
+Chunk::Chunk(glm::vec2 origin) : vb(nullptr, 0), ib(nullptr, 0), faceNumber(0)
 {
-	origin = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->chunkCoords = origin;
 	for (int z = 0; z < 16; z++) {
 		for (int x = 0; x < 16; x++) {
-			for (int y = 0; y < 256; y++)
-			blocks[y][z][x] = Block(glm::vec3(x, y, z), GRASS);
+			for (int y = 0; y < 2; y++) {
+				blocks[y][z][x] = Block(glm::vec3(x, y, z), GRASS);
+			}
 		}
 	}
 	vbl.Push<float>(3);	
 	vbl.Push<float>(2);
 
 	RebuildMeshes();
-	
 }
 
 Chunk::~Chunk()
@@ -51,7 +51,7 @@ void Chunk::RebuildMeshes()
 	vb.UpdateData(vertexInfo.data(), vertexInfo.size() * sizeof(Vertex));
 	ib.UpdateData(indexValues.data(), indexValues.size() * sizeof(unsigned int));
 	va.AddBuffer(vb, vbl);
-	std::cout << faceNumber << "\n";
+	//std::cout << faceNumber << "\n";
 }
 
 void Chunk::RenderChunk()
@@ -59,8 +59,14 @@ void Chunk::RenderChunk()
 	va.Bind();
 	ib.Bind();
 	glActiveTexture(GL_TEXTURE0);
-	texture.Bind();
+	ct.GetTexture(DIRT).Bind();
 	glDrawElements(GL_TRIANGLES, indexValues.size(), GL_UNSIGNED_INT, nullptr);
+}
+
+void Chunk::RemoveBlock(glm::vec3 blockToRemove)
+{
+	blocks[int(blockToRemove.y)][int(blockToRemove.z)][int(blockToRemove.x)] = Block(blockToRemove, AIR);
+	RebuildMeshes();
 }
 
 void Chunk::AddFace(CubeFace face, Block& block)
@@ -92,10 +98,10 @@ void Chunk::AddFace(CubeFace face, Block& block)
 		textCoords = backFaceTex;
 	}
 
-	vertexInfo.push_back({ positions[0] + block.position, textCoords[0] });
-	vertexInfo.push_back({ positions[1] + block.position, textCoords[1] });
-	vertexInfo.push_back({ positions[2] + block.position, textCoords[2] });
-	vertexInfo.push_back({ positions[3] + block.position, textCoords[3] });
+	vertexInfo.push_back({ positions[0] + block.position + glm::vec3(chunkCoords.x * 16, 0, chunkCoords.y * 16), textCoords[0] });
+	vertexInfo.push_back({ positions[1] + block.position + glm::vec3(chunkCoords.x * 16, 0, chunkCoords.y * 16), textCoords[1] });
+	vertexInfo.push_back({ positions[2] + block.position + glm::vec3(chunkCoords.x * 16, 0, chunkCoords.y * 16), textCoords[2] });
+	vertexInfo.push_back({ positions[3] + block.position + glm::vec3(chunkCoords.x * 16, 0, chunkCoords.y * 16), textCoords[3] });
 
 	
 	for (unsigned int index : indices) {

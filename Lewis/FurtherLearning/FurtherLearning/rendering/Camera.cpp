@@ -1,11 +1,24 @@
 #include "Camera.h"
 #include <math.h>
+#include "CubeRenderer.h"
 
-Camera::Camera() : input(Input::GetInstance())
+Camera* Camera::GetInstance() {
+	if (!s_Instance) {
+		s_Instance = std::make_unique<Camera>();
+	}
+	return s_Instance.get();
+}
+
+Camera::Camera()
 {
+	cr = CubeRenderer::GetInstance();
+
+	camChunk = glm::vec2(0, 0);
+	input = Input::GetInstance();
+
 	fov = 45.0f;
 
-	cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+	cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
 	cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -34,11 +47,14 @@ void Camera::Update()
 	MoveCamera();
 	ScrollCamera();
 
+	camChunk = glm::vec2(int(cameraPos.x / 16), int(cameraPos.z / 16));
+
 	float currentFrame = glfwGetTime();
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
 	//std::cout << std::round((1.f / deltaTime)) << std::endl;
+	//std::cout << "Camera in chunk: " << camChunk.x << ", " << camChunk.y << "\n";
 
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 	projection = glm::perspective(glm::radians(fov), screenX / screenY, 0.1f, 500.0f);
@@ -103,4 +119,9 @@ void Camera::Left()
 void Camera::Right()
 {
 	cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * deltaTime * cameraSpeed;
+}
+
+void Camera::BreakBlock()
+{
+
 }

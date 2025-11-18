@@ -6,6 +6,7 @@
 #include "../rendering/VertexBufferLayout.h"
 #include "../rendering/IndexBuffer.h"
 #include "../rendering/Texture.h"
+#include "CubeTextures.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -14,20 +15,21 @@
 class Chunk
 {
 public:
-	Chunk();
+	Chunk(glm::vec2 origin);
 	~Chunk();
 	void RebuildMeshes();
 	void RenderChunk();
+    void RemoveBlock(glm::vec3 blockToRemove);
 private:
 	void AddFace(CubeFace face, Block& block);
 public:
 	VertexArray va;
 	VertexBuffer vb;
 	IndexBuffer ib;
-    Texture texture;
+    CubeTextures ct;
 	VertexBufferLayout vbl;
+    glm::vec2 chunkCoords;
 private:
-	glm::vec3 origin;
 
 	static const int CHUNK_X = 16;
 	static const int CHUNK_Z = 16;

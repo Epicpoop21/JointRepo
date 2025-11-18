@@ -14,13 +14,21 @@
 
 class CubeRenderer {
 public:
+	static CubeRenderer* GetInstance();
+
 	CubeRenderer();
 	~CubeRenderer();
-	void Render();
+
+	static void Render();
+	static int GetChunkIndexByWorldCoords(glm::vec3 coords);
+	static void RemoveBlock();
 private:
 
 public:
 
 private:
-	std::unique_ptr<Chunk> chunk;
+	inline static std::unique_ptr<CubeRenderer> s_Instance;
+
+	static inline std::vector<std::unique_ptr<Chunk>> chunks;
+	static inline int renderDistance = 2;
 };

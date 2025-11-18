@@ -7,6 +7,8 @@
 #include "../util/Input.h"
 #include "Shader.h"
 
+class CubeRenderer;
+
 #define screenY 1080.0f
 #define screenX 1920.0f
 
@@ -15,39 +17,48 @@ public:
 	Camera();
 	~Camera();
 
-	void Update();
+	static Camera* GetInstance();
+
+	static void Update();
 	static void mouse_callback(GLFWwindow* window, double xPos, double yPos);
 	static void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
-	void MoveCamera();
-	void ScrollCamera();
+	static void MoveCamera();
+	static void ScrollCamera();
+	 
+	static void Forward();
+	static void Backward();
+	static void Left();
+	static void Right();
 
-	void Forward();
-	void Backward();
-	void Left();
-	void Right();
+	static void BreakBlock();
 private:
 
 public:
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
-	float cameraSpeed = 2.0f;
+	inline static glm::mat4 view = glm::mat4(1.0f);
+	inline static glm::mat4 projection = glm::mat4(1.0f);
+	inline static float cameraSpeed = 100.0f;
+
+	inline static glm::vec3 cameraPos;
+	inline static glm::vec3 cameraFront;
+	inline static glm::vec3 cameraUp;
+
+	inline static glm::vec2 camChunk;
 private:
-	glm::vec3 cameraPos;
-	glm::vec3 cameraFront;
-	glm::vec3 cameraUp;
-
-	float deltaTime = 0.0f;
-	float lastFrame = 0.0f;
-
-	float yaw = -90.0f;
-	float pitch = 0.0f;
-	float fov = 45.0f;
-
+	inline static std::unique_ptr<Camera> s_Instance;
+	  
+	inline static float deltaTime = 0.0f;
+	inline static float lastFrame = 0.0f;
+	  
+	inline static float yaw = -90.0f;
+	inline static float pitch = 0.0f;
+	inline static float fov = 45.0f;
+	  
 	inline static float yOffset;
 	inline static double xPos, yPos;
-
-	float lastX = screenX / 2, lastY = screenY / 2;
-	bool firstMouse = false;
-
-	Input* input;
+	  
+	inline static float lastX = screenX / 2, lastY = screenY / 2;
+	inline static bool firstMouse = false;
+	 
+	inline static Input* input;
+	inline static CubeRenderer* cr;
 };

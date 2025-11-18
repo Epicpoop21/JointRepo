@@ -31,6 +31,7 @@ Game::Game()
 
 	shader = Shader("rendering/VertexShader.s", "rendering/FragmentShader.s");
 	cr.emplace();
+	cam = Camera::GetInstance();
 
 	glViewport(0, 0, screenX, screenY);
 	glEnable(GL_DEPTH_TEST);
@@ -45,17 +46,17 @@ Game::~Game()
 void Game::Update()
 {
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.7f, 0.7f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.Use();
 		shader.SetInt("textureImage", 0);
-		cam.Update();
+		cam->Update();
 		cr->Render();
-		shader.SetMat4f("view", cam.view);
-		shader.SetMat4f("projection", cam.projection);
+		shader.SetMat4f("view", cam->view);
+		shader.SetMat4f("projection", cam->projection);
 		if (input.keyStateMap[GLFW_KEY_ESCAPE]) glfwSetWindowShouldClose(window, true);
-		if (input.keyStateMap[GLFW_MOUSE_BUTTON_1]) std::cout << "Left click \n";
+		if (input.keyStateMap[GLFW_MOUSE_BUTTON_1]) cr->RemoveBlock();
 		if (input.keyStateMap[GLFW_KEY_P] && polyframe == false) {
 			polyframe = true;
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

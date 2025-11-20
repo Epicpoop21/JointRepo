@@ -19,7 +19,7 @@ public:
 	~Chunk();
 	void RebuildMeshes();
 	void RenderChunk();
-    void RemoveBlock(glm::vec3 blockToRemove);
+    bool RemoveBlock(glm::vec3* blockToRemove);
 private:
 	void AddFace(CubeFace face, Block& block);
 public:

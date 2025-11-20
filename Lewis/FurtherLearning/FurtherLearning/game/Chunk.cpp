@@ -63,10 +63,16 @@ void Chunk::RenderChunk()
 	glDrawElements(GL_TRIANGLES, indexValues.size(), GL_UNSIGNED_INT, nullptr);
 }
 
-void Chunk::RemoveBlock(glm::vec3 blockToRemove)
+bool Chunk::RemoveBlock(glm::vec3* blockToRemove)
 {
-	blocks[int(blockToRemove.y)][int(blockToRemove.z)][int(blockToRemove.x)] = Block(blockToRemove, AIR);
+	if (blocks[int(blockToRemove->y)][int(blockToRemove->z)][int(blockToRemove->x)].type == AIR) {
+		return false;
+	}
+	//std::cout << "Block is removed at (" << blockToRemove->x << ", " << blockToRemove->y << ", " << blockToRemove->z << ")\n";
+	blocks[int(blockToRemove->y)][int(blockToRemove->z)][int(blockToRemove->x)] = Block(*blockToRemove, AIR);
 	RebuildMeshes();
+	delete blockToRemove;
+	return true;
 }
 
 void Chunk::AddFace(CubeFace face, Block& block)

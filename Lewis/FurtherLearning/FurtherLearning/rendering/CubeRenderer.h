@@ -18,17 +18,18 @@ public:
 
 	CubeRenderer();
 	~CubeRenderer();
-
 	static void Render();
 	static int GetChunkIndexByWorldCoords(glm::vec3 coords);
 	static void RemoveBlock();
+	static glm::vec2 WorldCoordsToChunk(glm::vec3 coords);
+	static glm::vec2 WorldCoordToLocalChunkCoord(glm::vec3 worldCoords, glm::vec2 chunkCoords);
 private:
 
 public:
 
 private:
-	inline static std::unique_ptr<CubeRenderer> s_Instance;
+	static std::unique_ptr<CubeRenderer> s_Instance;
 
-	static inline std::vector<std::unique_ptr<Chunk>> chunks;
-	static inline int renderDistance = 2;
+	static std::vector<std::unique_ptr<Chunk>> chunks;
+	static int renderDistance;
 };

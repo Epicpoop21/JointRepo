@@ -20,6 +20,12 @@ enum BlockType {
 	STONE
 };
 
+struct BlockTextureInfo {
+	glm::vec2 uvTop;
+	glm::vec2 uvSide;
+	glm::vec2 uvBottom;
+};
+
 class Block {
 public:
 	Block() = default;

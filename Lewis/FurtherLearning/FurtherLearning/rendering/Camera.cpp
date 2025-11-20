@@ -11,10 +11,9 @@ Camera* Camera::GetInstance() {
 
 Camera::Camera()
 {
-	cr = CubeRenderer::GetInstance();
-
 	camChunk = glm::vec2(0, 0);
 	input = Input::GetInstance();
+	cr = CubeRenderer::GetInstance();
 
 	fov = 45.0f;
 

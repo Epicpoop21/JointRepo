@@ -20,7 +20,7 @@ private:
 	GLFWwindow* window;
 	Shader shader;
 	Input input;
-	std::optional<CubeRenderer> cr;
+	CubeRenderer* cr;
 	Camera* cam;
 
 	inline static bool polyframe;

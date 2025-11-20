@@ -29,9 +29,10 @@ Game::Game()
 		std::cout << "FAILED TO INITIALISE GLAD. \n";
 	}
 
-	shader = Shader("rendering/VertexShader.s", "rendering/FragmentShader.s");
-	cr.emplace();
+	cr = CubeRenderer::GetInstance();
 	cam = Camera::GetInstance();
+
+	shader = Shader("rendering/VertexShader.s", "rendering/FragmentShader.s");
 
 	glViewport(0, 0, screenX, screenY);
 	glEnable(GL_DEPTH_TEST);

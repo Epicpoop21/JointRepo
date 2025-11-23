@@ -143,10 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="game\CubeTextures.cpp" />
     <ClCompile Include="game\Chunk.cpp" />
     <ClCompile Include="game\Block.cpp" />
     <ClCompile Include="rendering\Texture.cpp" />
+    <ClCompile Include="game\UI.cpp" />
     <ClCompile Include="util\GameData.cpp" />
     <ClCompile Include="util\Game.cpp" />
     <ClCompile Include="glad.c" />
@@ -160,10 +160,10 @@
     <ClCompile Include="rendering\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="game\CubeTextures.h" />
     <ClInclude Include="game\Chunk.h" />
     <ClInclude Include="game\Block.h" />
     <ClInclude Include="rendering\Texture.h" />
+    <ClInclude Include="game\UI.h" />
     <ClInclude Include="util\GameData.h" />
     <ClInclude Include="util\Game.h" />
     <ClInclude Include="util\Input.h" />
@@ -177,8 +177,10 @@
     <ClInclude Include="rendering\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="rendering\FragmentShader.s" />
-    <None Include="rendering\VertexShader.s" />
+    <None Include="rendering\Shaders\UIFS.s" />
+    <None Include="rendering\Shaders\UIVS.s" />
+    <None Include="rendering\Shaders\WorldFS.s" />
+    <None Include="rendering\Shaders\WorldVS.s" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

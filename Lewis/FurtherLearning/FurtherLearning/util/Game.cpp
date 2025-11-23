@@ -29,15 +29,21 @@ Game::Game()
 		std::cout << "FAILED TO INITIALISE GLAD. \n";
 	}
 
-	cr = CubeRenderer::GetInstance();
-	cam = Camera::GetInstance();
+	worldShader = Shader("rendering/Shaders/WorldVS.s", "rendering/Shaders/WorldFS.s");
+	UIShader = Shader("rendering/Shaders/UIVS.s", "rendering/Shaders/UIFS.s");
 
-	shader = Shader("rendering/VertexShader.s", "rendering/FragmentShader.s");
+	cr = CubeRenderer::GetInstance();
+	cr->AddShader(&worldShader);
+	cam = Camera::GetInstance();
+	ui = new UI(&UIShader);
 
 	glViewport(0, 0, screenX, screenY);
 	glEnable(GL_DEPTH_TEST);
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_CCW);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 Game::~Game()
@@ -50,12 +56,10 @@ void Game::Update()
 		glClearColor(0.7f, 0.7f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader.Use();
-		shader.SetInt("textureImage", 0);
 		cam->Update();
 		cr->Render();
-		shader.SetMat4f("view", cam->view);
-		shader.SetMat4f("projection", cam->projection);
+		ui->Update();
+
 		if (input.keyStateMap[GLFW_KEY_ESCAPE]) glfwSetWindowShouldClose(window, true);
 		if (input.keyStateMap[GLFW_MOUSE_BUTTON_1]) cr->RemoveBlock();
 		if (input.keyStateMap[GLFW_KEY_P] && polyframe == false) {

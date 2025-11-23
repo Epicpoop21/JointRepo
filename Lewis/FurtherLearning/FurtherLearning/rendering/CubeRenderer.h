@@ -18,6 +18,7 @@ public:
 
 	CubeRenderer();
 	~CubeRenderer();
+	static void AddShader(Shader* shader);
 	static void Render();
 	static int GetChunkIndexByWorldCoords(glm::vec3 coords);
 	static void RemoveBlock();
@@ -29,7 +30,8 @@ public:
 
 private:
 	static std::unique_ptr<CubeRenderer> s_Instance;
-
+	static Texture textureGrid;
 	static std::vector<std::unique_ptr<Chunk>> chunks;
 	static int renderDistance;
+	static Shader* shader;
 };

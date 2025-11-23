@@ -4,7 +4,6 @@
 #include <iostream>
 
 int main() {
-	std::cout << -24 % 16 << "\n";
 	Game game;
 	game.Update();
 }

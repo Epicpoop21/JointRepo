@@ -18,10 +18,12 @@ public:
 
 private:
 	GLFWwindow* window;
-	Shader shader;
+	Shader worldShader;
+	Shader UIShader;
 	Input input;
 	CubeRenderer* cr;
 	Camera* cam;
+	UI* ui;
 
 	inline static bool polyframe;
 };

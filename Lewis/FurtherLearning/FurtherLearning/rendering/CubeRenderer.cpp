@@ -5,24 +5,22 @@
 int CubeRenderer::renderDistance = 4;
 std::vector<std::unique_ptr<Chunk>> CubeRenderer::chunks{};
 std::unique_ptr<CubeRenderer> CubeRenderer::s_Instance = nullptr;
+Texture CubeRenderer::textureGrid = Texture(nullptr);
+Shader* CubeRenderer::shader = nullptr;
 
 CubeRenderer* CubeRenderer::GetInstance() {
-	std::cout << "GetInstance called\n";
 	if (!s_Instance) {
-		std::cout << "    Creating instance\n";
 		s_Instance = std::make_unique<CubeRenderer>();
-	}
-	else {
-		std::cout << "    Already exists\n";
 	}
 	return s_Instance.get();
 }
 
 CubeRenderer::CubeRenderer()
 {
+	textureGrid.LaterCompilation("res/textures/TextureGrid.png");
 	for (int z = -renderDistance; z < renderDistance; z++) {
 		for (int x = -renderDistance; x < renderDistance; x++) {
-			chunks.push_back(std::make_unique<Chunk>(glm::vec2(x, z)));
+			chunks.push_back(std::make_unique<Chunk>(glm::vec2(x, z), textureGrid));
 			std::cout << "Chunk spawned at: (" << x << ", " << z << ") \n";
 		}
 	}
@@ -34,31 +32,38 @@ CubeRenderer::~CubeRenderer()
 
 }
 
+void CubeRenderer::AddShader(Shader* shader)
+{
+	CubeRenderer::shader = shader;
+}
+
 void CubeRenderer::Render()
 {
 	glm::vec2 cameraChunk = Camera::camChunk;
 	for (int i = chunks.size() - 1; i >= 0; i--) {
 		auto& chunk = chunks[i];
 		glm::ivec2 chunkCoords = chunk->chunkCoords;
-
+		/*
 		if (chunkCoords.y > cameraChunk.y + renderDistance) {
-			chunk = std::make_unique<Chunk>(glm::vec2(chunkCoords.x, cameraChunk.y - renderDistance + 1));
+			chunk = std::make_unique<Chunk>(glm::vec2(chunkCoords.x, cameraChunk.y - renderDistance + 1), textureGrid);
 			continue;
 		}
 		if (chunkCoords.y < cameraChunk.y - renderDistance) {
-			chunk = std::make_unique<Chunk>(glm::vec2(chunkCoords.x, cameraChunk.y + renderDistance - 1));
+			chunk = std::make_unique<Chunk>(glm::vec2(chunkCoords.x, cameraChunk.y + renderDistance - 1), textureGrid);
 			continue;
 		}
 		if (chunkCoords.x > cameraChunk.x + renderDistance) {
-			chunk = std::make_unique<Chunk>(glm::vec2(cameraChunk.x - renderDistance + 1, chunkCoords.y));
+			chunk = std::make_unique<Chunk>(glm::vec2(cameraChunk.x - renderDistance + 1, chunkCoords.y), textureGrid);
 			continue;
 		}
 		if (chunkCoords.x < cameraChunk.x - renderDistance) {
-			chunk = std::make_unique<Chunk>(glm::vec2(cameraChunk.x + renderDistance - 1, chunkCoords.y));
+			chunk = std::make_unique<Chunk>(glm::vec2(cameraChunk.x + renderDistance - 1, chunkCoords.y), textureGrid);
 			continue;
-		}
+		} */
 	}
-
+	shader->Use();
+	shader->SetMat4f("view", Camera::view);
+	shader->SetMat4f("projection", Camera::projection);
 	for (auto& chunk : chunks) {
 		chunk->RenderChunk();
 	}

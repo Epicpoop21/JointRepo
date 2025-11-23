@@ -10,6 +10,7 @@ public:
 	~Texture();
 	void Bind();
 	void Unbind();
+	void LaterCompilation(const char* filePath);
 private:
 
 public:

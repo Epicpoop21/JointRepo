@@ -1,5 +1,5 @@
 #pragma once
-
+#pragma message("Compiling Block.h")
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/mat2x2.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -17,14 +17,19 @@ enum BlockType {
 	AIR,
 	GRASS,
 	DIRT,
-	STONE
+	STONE,
+	BEDROCK,
+	OAKLOG,
+	LEAF
 };
 
 struct BlockTextureInfo {
-	glm::vec2 uvTop;
-	glm::vec2 uvSide;
-	glm::vec2 uvBottom;
+	glm::ivec2 uvTop;
+	glm::ivec2 uvSide;
+	glm::ivec2 uvBottom;
 };
+
+extern BlockTextureInfo BLOCK_DATABASE[7];
 
 class Block {
 public:

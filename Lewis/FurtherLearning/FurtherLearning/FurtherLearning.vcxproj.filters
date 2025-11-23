@@ -57,7 +57,7 @@
     <ClCompile Include="rendering\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\CubeTextures.cpp">
+    <ClCompile Include="game\UI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,12 +104,14 @@
     <ClInclude Include="rendering\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\CubeTextures.h">
+    <ClInclude Include="game\UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="rendering\FragmentShader.s" />
-    <None Include="rendering\VertexShader.s" />
+    <None Include="rendering\Shaders\WorldFS.s" />
+    <None Include="rendering\Shaders\WorldVS.s" />
+    <None Include="rendering\Shaders\UIVS.s" />
+    <None Include="rendering\Shaders\UIFS.s" />
   </ItemGroup>
 </Project>

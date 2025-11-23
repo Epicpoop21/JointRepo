@@ -40,8 +40,8 @@ void Camera::Update()
 	if (input->keyStateMap[GLFW_KEY_D]) Right();
 	if (input->keyStateMap[GLFW_KEY_S]) Backward();
 	if (input->keyStateMap[GLFW_KEY_A]) Left();
-	if (input->keyStateMap[GLFW_KEY_LEFT_SHIFT]) cameraSpeed = 4.0f;
-	if (!input->keyStateMap[GLFW_KEY_LEFT_SHIFT]) cameraSpeed = 2.0f;
+	if (input->keyStateMap[GLFW_KEY_LEFT_SHIFT]) cameraSpeed = 20.0f;
+	if (!input->keyStateMap[GLFW_KEY_LEFT_SHIFT]) cameraSpeed = 10.0f;
 
 	MoveCamera();
 	ScrollCamera();

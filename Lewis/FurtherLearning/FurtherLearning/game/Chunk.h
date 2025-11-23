@@ -6,7 +6,6 @@
 #include "../rendering/VertexBufferLayout.h"
 #include "../rendering/IndexBuffer.h"
 #include "../rendering/Texture.h"
-#include "CubeTextures.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -15,22 +14,24 @@
 class Chunk
 {
 public:
-	Chunk(glm::vec2 origin);
+	Chunk(glm::vec2 origin, Texture& texture);
 	~Chunk();
 	void RebuildMeshes();
 	void RenderChunk();
     bool RemoveBlock(glm::vec3* blockToRemove);
+    glm::vec2* GenerateUVCoords(Block& block, CubeFace face);
+    glm::vec2 AtlasUV(glm::vec2 uv, glm::ivec2 tile);
 private:
 	void AddFace(CubeFace face, Block& block);
 public:
 	VertexArray va;
 	VertexBuffer vb;
 	IndexBuffer ib;
-    CubeTextures ct;
+    Texture& textureGrid;
 	VertexBufferLayout vbl;
     glm::vec2 chunkCoords;
 private:
-
+    static float textureTileSize;
 	static const int CHUNK_X = 16;
 	static const int CHUNK_Z = 16;
 	static const int CHUNK_Y = 256;
@@ -44,20 +45,13 @@ private:
 	std::vector<Vertex> vertexInfo;
 	std::vector<unsigned int> indexValues;
 
-	unsigned int faceNumber;
+	static unsigned int faceNumber;
 
     glm::vec3 topFacePos[4] = {
         {0.0f, 1.0f, 0.0f},
         {1.0f, 1.0f, 0.0f},
         {0.0f, 1.0f, 1.0f},
         {1.0f, 1.0f, 1.0f}
-    };
-
-    glm::vec2 topFaceTex[4] = {
-        {0.0f, 0.0f},
-        {0.0f, 1.0f},
-        {1.0f, 0.0f},
-        {1.0f, 1.0f}
     };
 
     glm::vec3 bottomFacePos[4] = {
@@ -67,25 +61,11 @@ private:
         {1.0f, 0.0f, 1.0f}
     };
 
-    glm::vec2 bottomFaceTex[4] = {
-        {0.0f, 0.0f},
-        {0.0f, 1.0f},
-        {1.0f, 0.0f},
-        {1.0f, 1.0f}
-    };
-
     glm::vec3 leftFacePos[4] = {
         {0.0f, 0.0f, 0.0f},
         {0.0f, 1.0f, 0.0f},
         {0.0f, 0.0f, 1.0f},
         {0.0f, 1.0f, 1.0f}
-    };
-
-    glm::vec2 leftFaceTex[4] = {
-        {0.0f, 0.0f},
-        {0.0f, 1.0f},
-        {1.0f, 0.0f},
-        {1.0f, 1.0f}
     };
 
     glm::vec3 rightFacePos[4] = {
@@ -95,25 +75,11 @@ private:
         {1.0f, 1.0f, 1.0f}
     };
 
-    glm::vec2 rightFaceTex[4] = {
-        {0.0f, 0.0f},
-        {0.0f, 1.0f},
-        {1.0f, 0.0f},
-        {1.0f, 1.0f}
-    };
-
     glm::vec3 frontFacePos[4] = {
         {0.0f, 0.0f, 1.0f},
         {0.0f, 1.0f, 1.0f},
         {1.0f, 0.0f, 1.0f},
         {1.0f, 1.0f, 1.0f}
-    };
-
-    glm::vec2 frontFaceTex[4] = {
-        {0.0f, 0.0f},
-        {0.0f, 1.0f},
-        {1.0f, 0.0f},
-        {1.0f, 1.0f}
     };
 
     glm::vec3 backFacePos[4] = {
@@ -123,7 +89,7 @@ private:
         {1.0f, 1.0f, 0.0f}
     };
 
-    glm::vec2 backFaceTex[4] = {
+    glm::vec2 baseTexCoords[4] = {
         {0.0f, 0.0f},
         {0.0f, 1.0f},
         {1.0f, 0.0f},

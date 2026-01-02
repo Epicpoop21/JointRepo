@@ -16,7 +16,7 @@ Chunk::Chunk(glm::vec2 origin, Texture& textureGrid) : vb(nullptr, 0), ib(nullpt
 			int worldZ = origin.y * 16 + z;
 
 			int heightX = glm::floor(((glm::cos(worldX * 0.2f) * 5.0f) + 8));
-			int heightZ = glm::floor(((glm::cos(worldZ * 0.2f) * 5.0f) + 8));
+			int heightZ = glm::floor(((glm::sin(worldZ * 0.2f) * 5.0f) + 8));
 
 			int totalHeight = heightX + heightZ;
 			for (y = 1; y < totalHeight - 2; y++) {
@@ -73,10 +73,6 @@ void Chunk::RebuildMeshes()
 	vb.UpdateData(vertexInfo.data(), vertexInfo.size() * sizeof(Vertex));
 	ib.UpdateData(indexValues.data(), indexValues.size() * sizeof(unsigned int));
 	va.AddBuffer(vb, vbl);
-	GLenum err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		std::cout << "1. ERROR IS: " << err << "\n";
-	}
 	//std::cout << faceNumber << "\n";
 }
 
@@ -95,6 +91,7 @@ bool Chunk::RemoveBlock(glm::vec3* blockToRemove)
 		return false;
 	}
 	//std::cout << "Block is removed at (" << blockToRemove->x << ", " << blockToRemove->y << ", " << blockToRemove->z << ")\n";
+
 	blocks[int(blockToRemove->y)][int(blockToRemove->z)][int(blockToRemove->x)] = Block(*blockToRemove, AIR);
 	RebuildMeshes();
 	delete blockToRemove;

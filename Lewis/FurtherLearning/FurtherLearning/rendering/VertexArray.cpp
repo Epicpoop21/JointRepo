@@ -10,6 +10,12 @@ VertexArray::~VertexArray()
 	glDeleteVertexArrays(1, &m_ObjectID);
 }
 
+void VertexArray::ResetBuffer()
+{
+	m_Index = 0;
+	m_ObjectID = 0;
+}
+
 void VertexArray::AddBuffer(VertexBuffer &vb, VertexBufferLayout& layout)
 {
 	Bind();
@@ -26,6 +32,8 @@ void VertexArray::AddBuffer(VertexBuffer &vb, VertexBufferLayout& layout)
 	vb.Unbind();
 	Unbind();
 }
+
+
 
 void VertexArray::Bind()
 {

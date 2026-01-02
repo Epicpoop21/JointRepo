@@ -43,7 +43,7 @@ void CubeRenderer::Render()
 	for (int i = chunks.size() - 1; i >= 0; i--) {
 		auto& chunk = chunks[i];
 		glm::ivec2 chunkCoords = chunk->chunkCoords;
-		/*
+		
 		if (chunkCoords.y > cameraChunk.y + renderDistance) {
 			chunk = std::make_unique<Chunk>(glm::vec2(chunkCoords.x, cameraChunk.y - renderDistance + 1), textureGrid);
 			continue;
@@ -59,7 +59,7 @@ void CubeRenderer::Render()
 		if (chunkCoords.x < cameraChunk.x - renderDistance) {
 			chunk = std::make_unique<Chunk>(glm::vec2(cameraChunk.x + renderDistance - 1, chunkCoords.y), textureGrid);
 			continue;
-		} */
+		} 
 	}
 	shader->Use();
 	shader->SetMat4f("view", Camera::view);

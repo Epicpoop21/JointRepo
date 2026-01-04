@@ -7,7 +7,9 @@
 
 UserManager::UserManager(SOCKET serverSocket) : nextUserNumber(0), sock(serverSocket)
 {
-
+	lPaddle = (Paddle*)Object::GetObjectByID(0);
+	rPaddle = (Paddle*)Object::GetObjectByID(1);
+	ball = (Ball*)Object::GetObjectByID(2);
 }
 
 UserManager::~UserManager() 

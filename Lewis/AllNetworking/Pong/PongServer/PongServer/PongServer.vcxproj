@@ -140,14 +140,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Objects\Ball.cpp" />
+    <ClCompile Include="Objects\Object.cpp" />
+    <ClCompile Include="Objects\Paddle.cpp" />
     <ClCompile Include="UDPHandler.cpp" />
-    <ClCompile Include="User.cpp" />
-    <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="UserManagement\User.cpp" />
+    <ClCompile Include="UserManagement\UserManager.cpp" />
+    <ClCompile Include="UserManagement\InputTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Objects\Ball.h" />
+    <ClInclude Include="Objects\Object.h" />
+    <ClInclude Include="Objects\Paddle.h" />
+    <ClInclude Include="proj.h" />
+    <ClInclude Include="UserManagement\InputTracker.h" />
     <ClInclude Include="UDPHandler.h" />
-    <ClInclude Include="User.h" />
-    <ClInclude Include="UserManager.h" />
+    <ClInclude Include="UserManagement\User.h" />
+    <ClInclude Include="UserManagement\UserManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,11 @@
 #pragma once
 
 #include <map>
+
 #include "User.h"
+#include "../Objects/Object.h"
+#include "../Objects/Paddle.h"
+#include "../Objects/Ball.h"
 
 class UserManager {
 public:
@@ -16,10 +20,16 @@ public:
 
 	void AddUser(sockaddr_in& clientInfo);
 	void RemoveUser(sockaddr_in& clientInfo);
+
+	void MoveObjects();
 private:
 
 public:
 	std::map<unsigned int, User> userIdMap;
+
+	Paddle* lPaddle;
+	Paddle* rPaddle;
+	Ball* ball;
 private:
 	int nextUserNumber;
 	SOCKET sock;

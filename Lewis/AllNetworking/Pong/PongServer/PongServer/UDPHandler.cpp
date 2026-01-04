@@ -43,6 +43,19 @@ UDPHandler::~UDPHandler()
 
 void UDPHandler::GetDataInSocket()
 {
+	FD_ZERO(&set);
+	FD_SET(sock, &set);
+
+	timeval timeout;
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 10000; // non-blocking poll
+
+	int result = select(0, &set, nullptr, nullptr, &timeout);
+	if (result == SOCKET_ERROR) {
+		std::cout << "ERROR READING FROM SOCKET: " << WSAGetLastError() << "\n";
+	} 
+	if (result == 0) return;
+
 	sockaddr_in clientInfo;
 	ZeroMemory(&clientInfo, clientLength);
 
@@ -83,9 +96,10 @@ void UDPHandler::ReceiveInput(char* inBuf, sockaddr_in& clientInfo) {
 
 	int userId = userManager.GetUserIDByIP(clientInfo);
 
-	if (action == GLFW_PRESS) {
-		BroadcastMovement({ userId, glm::vec2(0.0f, 1.0f) * 100.0f });
-	}
+	auto it = userManager.userIdMap.find(userId);
+	if (it == userManager.userIdMap.end()) return;
+	it->second.inputTracker.KeyPressed(key, action);
+	
 	std::cout << "ACTION: " << action << " KEY: " << key << " USER:" << userId << "\n";
 }
 

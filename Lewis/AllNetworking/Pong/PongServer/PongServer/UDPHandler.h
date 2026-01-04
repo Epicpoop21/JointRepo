@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-#include "UserManager.h"
+#include "./UserManagement/UserManager.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -29,16 +29,14 @@ public:
 	UDPHandler(std::string serverIp, int port);
 	~UDPHandler();
 	void GetDataInSocket();
+	void BroadcastMovement(Movement move);
 private:
 	void ReceiveInput(char* buf, sockaddr_in& clientInfo);
 	void ClientJoined(sockaddr_in& clientInfo);
 	void ClientLeft(sockaddr_in& clientInfo);
-	void BroadcastMovement(Movement move);
 public:
-
-private:
 	UserManager userManager;
-
+private:
 	WSADATA data;
 	SOCKET sock;
 	int serverPort;

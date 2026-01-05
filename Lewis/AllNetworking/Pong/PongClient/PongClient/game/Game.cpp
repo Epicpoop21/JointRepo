@@ -34,8 +34,6 @@ void Game::GameLoop()
 		renderer.Render(lPaddle.rd, 6);
 		renderer.Render(rPaddle.rd, 6);
 		renderer.Render(ball.rd, 6);
-
-		//lPaddle.Move(glm::vec2(0.0f, 1.0f) * 50.0f * deltaTime);
 		
 		glfwPollEvents();
 		glfwSwapBuffers(window); 

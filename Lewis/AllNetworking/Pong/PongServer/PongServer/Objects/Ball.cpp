@@ -22,7 +22,18 @@ bool Ball::Move(glm::vec2 velocity) {
 		return true; 
 	}
 
-	std::cout << "BALL CENTRE IS: " << centre.x << ", " << centre.y << "\n";
+	//std::cout << "BALL CENTRE IS: " << centre.x << ", " << centre.y << "\n";
 	centre += currentVelocity;
 	return true;
+}
+
+void Ball::CheckCollisions(glm::vec2& leftPaddleCentre, glm::vec2& rightPaddleCentre)
+{
+	if (centre.x + ballRadius > 1830.0f && (centre.y + ballRadius < rightPaddleCentre.y + 80.0f && centre.y - ballRadius > rightPaddleCentre.y - 80.0f)) {
+		currentVelocity.x *= -1;
+	}
+
+	if (centre.x - ballRadius < 90.0f && (centre.y + ballRadius < leftPaddleCentre.y + 80.0f && centre.y - ballRadius > leftPaddleCentre.y - 80.0f)) {
+		currentVelocity.x *= -1;
+	}
 }

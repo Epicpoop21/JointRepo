@@ -70,7 +70,7 @@ void UDPHandler::DealWithMovement()
 
 	Object* object = Object::GetObjectByID(move.objectId);
 	if (object == nullptr) return;
-	std::cout << move.velocity.x << ", " << move.velocity.y << "\n";
+	//std::cout << move.velocity.x << ", " << move.velocity.y << "\n";
 	object->Move(move.velocity);
 }
 

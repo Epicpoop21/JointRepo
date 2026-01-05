@@ -12,7 +12,7 @@ public:
 	Object(glm::vec2 centre, int width, int height);
 	~Object();
 
-	void Move(glm::vec2 velocity);
+	virtual void Move(glm::vec2 velocity);
 	static Object* GetObjectByID(int id);
 private:
 

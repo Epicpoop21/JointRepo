@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <iostream>
 
 #include <glm/glm.hpp>
 
@@ -16,8 +17,8 @@ private:
 
 public:
 	int objectNum;
-protected:
 	glm::vec2 centre;
+protected:
 private:
 	static inline std::unordered_map<int, Object*> objectMap;
 	static inline int totalObjectNumber = 0;

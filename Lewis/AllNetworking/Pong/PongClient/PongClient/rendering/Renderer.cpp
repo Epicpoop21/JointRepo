@@ -2,7 +2,7 @@
 
 Renderer::Renderer()
 {
-	projection = glm::ortho(0.0f, 2560.0f, 0.0f, 1440.0f, 0.0f, 100.0f);
+	projection = glm::ortho(0.0f, 1920.0f, 0.0f, 1080.0f, 0.0f, 100.0f);
 	shader = Shader("./vertex.s", "./frag.s");
 	view = glm::mat4(1.0f);
 }
@@ -20,6 +20,6 @@ void Renderer::Render(RenderData& rd, int pointsToRender)
 	shader.SetMat4f("projection", projection);
 
 	rd.va.Bind();
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); //THIS LINE CAUSES THE CRASH 
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL); 
 	rd.va.Unbind();
 }

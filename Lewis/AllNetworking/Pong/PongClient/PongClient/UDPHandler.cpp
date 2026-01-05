@@ -65,11 +65,12 @@ void UDPHandler::DealWithMovement()
 	Movement move;
 	ZeroMemory(&move, sizeof(Movement));
 	memcpy(&move, inBuf + 1, sizeof(Movement));
-	std::cout << move.objectId << "\n";
-	std::cout << "X: " << move.velocity.x << " Y: " << move.velocity.y << "\n";
+	/*std::cout << move.objectId << "\n";
+	std::cout << "X: " << move.velocity.x << " Y: " << move.velocity.y << "\n";*/
 
 	Object* object = Object::GetObjectByID(move.objectId);
 	if (object == nullptr) return;
+	std::cout << move.velocity.x << ", " << move.velocity.y << "\n";
 	object->Move(move.velocity);
 }
 

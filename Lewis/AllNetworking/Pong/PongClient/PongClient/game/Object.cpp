@@ -13,6 +13,7 @@ Object::~Object()
 
 void Object::Move(glm::vec2 velocity)
 {
+	rd.modelMatrix = glm::mat4(1.0f); 
 	rd.modelMatrix = glm::translate(rd.modelMatrix, glm::vec3(velocity.x, velocity.y, 0.0f));
 }
 

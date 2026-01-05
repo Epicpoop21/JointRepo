@@ -5,10 +5,10 @@ float Game::lastTime = 0.0f;
 UDPHandler* Game::udpHandler = nullptr;
 
 Game::Game(GLFWwindow* window, UDPHandler* udpHandler)
-	: lPaddle(0, glm::vec2(80.0f, 720.0f)),
-	rPaddle(1, glm::vec2(2500.0f, 720.0f)),
+	: lPaddle(0, glm::vec2(60.0f, 540.0f)),
+	rPaddle(1, glm::vec2(1840.0f, 540.0f)),
 	window(window),
-	ball(glm::vec2(1280, 720))
+	ball(glm::vec2(960.0f, 540.0f))
 {
 	Game::udpHandler = udpHandler;
 	udpHandler->SetGame(this);

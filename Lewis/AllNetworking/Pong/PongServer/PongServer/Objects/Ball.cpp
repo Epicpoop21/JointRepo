@@ -10,8 +10,19 @@ Ball::~Ball()
 }
 
 bool Ball::Move(glm::vec2 velocity) {
-	if (centre.y + 30.0f + velocity.y > 1080.0f || centre.y - 30.0f + velocity.y < 0.0f) { currentVelocity.y *= -1; return false; }
-	if (centre.x + 30.0f + velocity.x > 1920.0f || centre.x - 30.0f + velocity.x < 0.0f) { currentVelocity.x *= -1; return false; }
-	centre += velocity;
+	if (centre.y + 30.0f > 1080.0f || centre.y - 30.0f < 0.0f) {
+		currentVelocity.y *= -1; 
+		centre += currentVelocity;
+		return true;
+	}
+
+	if (centre.x + 30.0f > 1920.0f || centre.x - 30.0f < 0.0f) {
+		currentVelocity.x *= -1; 
+		centre += currentVelocity;
+		return true; 
+	}
+
+	std::cout << "BALL CENTRE IS: " << centre.x << ", " << centre.y << "\n";
+	centre += currentVelocity;
 	return true;
 }

@@ -8,7 +8,7 @@ public:
 	Ball(glm::vec2 centre);
 	~Ball();
 
-	void Move(int horizontalDirection, int verticalDirection, float speed);
+	void Move(glm::vec2 velocity);
 private:
 
 public:

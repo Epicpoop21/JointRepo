@@ -8,7 +8,7 @@
 #include "UDPHandler.h"
 
 int main() {
-	UDPHandler udpHandler("127.0.0.1", 55555);
+	UDPHandler udpHandler("172.30.202.136", 55555);
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

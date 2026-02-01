@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Shader.h"
+
 void framebuffer_resize_callback(GLFWwindow* window, int height, int width);
 void key_input_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
@@ -14,7 +16,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	//Create a window size 1920x1080. If the function returns nullptr, the function has failed
-	GLFWwindow* window = glfwCreateWindow(1920, 1080, "Particle System", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(1920, 1080, "Particle System", glfwGetPrimaryMonitor(), nullptr);
 	if (window == nullptr) {
 		std::cout << "ERROR CREATING WINDOW\n";
 		glfwTerminate();
@@ -29,16 +31,52 @@ int main() {
 		return -1;
 	}
 
-
 	//Specify the actual area on the window to render to
 	glViewport(0, 0, 1920, 1080);
 	//Gives GLFW a function to run if the size of the window is changed
 	glfwSetFramebufferSizeCallback(window, framebuffer_resize_callback);
 	glfwSetKeyCallback(window, key_input_callback);
 
+	float vertices[] = {
+		-1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+		 1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 
+		 1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		1, 2, 3
+	};
+
+	Shader shader("./vert.s", "./frag.s");
+
+	unsigned int VAO, VBO, IBO;
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	
+	glGenBuffers(1, &IBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glGenVertexArrays(1, &VAO); 
+	glBindVertexArray(VAO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)(sizeof(float)*3));
+	glEnableVertexAttribArray(1);
+
+
 	while (!glfwWindowShouldClose(window)) {
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		shader.Use();
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 
 		glfwSwapBuffers(window);
 		//Causes input and window related callbacks to be run

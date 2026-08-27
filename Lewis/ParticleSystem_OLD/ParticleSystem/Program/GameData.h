@@ -5,6 +5,8 @@
 #include "../Rendering/Renderer.h"
 #include "../Events/EventHeader.h"
 
+struct Particle;
+
 class GameData {
 public:
 	GameData();
@@ -17,14 +19,26 @@ private:
 	void Click(const Event<GameEvents>& event);
 public:
 	int elapasedTime;
-	time_t startTime;
+	double startTime;
 	bool paused;
 	bool polyframe;
+	bool clicked;
+
+	float particleBounciness;
+	float mouseRadius;
+	float particleRepelDistance;
+	float mouseInteractStrength;
+	bool collisions;
+	bool gravity;
+
+	float ke;
 
 	glm::vec2 mousePos;
-
+	
 	float screenY;
 	float screenX;
+
+	Particle* currentParticle;
 private:
 	EventHandler* eventHandler;
 };

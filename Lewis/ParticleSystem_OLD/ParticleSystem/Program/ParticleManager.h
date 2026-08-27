@@ -3,6 +3,8 @@
 #include "../Events/EventHeader.h"
 #include "GameData.h"
 
+#include <imgui/imgui.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -35,17 +37,14 @@ private:
 public:
 
 private:
-	float particleSpacing;
-	float particleBounciness;
-	float particleInitialVelocity;
-	float particleRepelDistance;
-	float mouseRadius;
-
-	float* quadVertices;
-	Shader& shader;
 	float particleRadius;
 	float minDistanceBetweenParticles;
 	float cellSize;
+	float particleSpacing;
+	float particleInitialVelocity;
+
+	float* quadVertices;
+	Shader& shader;
 	std::vector<Particle> particles;
 	std::unordered_map<int64_t, std::vector<int>> grid;
 	std::vector<glm::vec3> instanceData;
@@ -53,6 +52,8 @@ private:
 	RenderInfo* renderObjects = nullptr;
 	EventHandler* eventHandler;
 	GameData* gameData;
+
+	ImGuiIO& io;
 
 	const int neighbouringOffsets[9][2] = {
 		{-1, -1}, {0, -1}, {1, -1},

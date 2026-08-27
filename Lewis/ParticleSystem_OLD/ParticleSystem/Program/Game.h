@@ -7,6 +7,7 @@
 
 #include "ParticleManager.h"
 #include "GameData.h"
+#include "GUIManager.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -34,5 +35,6 @@ private:
 	Shader shader;
 	std::unordered_map<GLenum, bool> keyMap;
 	EventHandler* eventHandler;
+	GUIManager guiManager;
 };
 

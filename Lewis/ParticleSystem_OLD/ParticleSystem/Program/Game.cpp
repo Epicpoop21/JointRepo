@@ -1,16 +1,23 @@
 #include "Game.h"
+
+#include <imgui/imgui.h>
+#include <imgui/backends/imgui_impl_glfw.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+
 #include <thread>
 Game::Game() 
 {
 	data = GameData();
-	data.screenX = 2560.0f;
-	data.screenY = 1440.0f;
+	data.screenX = 1920.0f;
+	data.screenY = 1080.0f;
 	SetupContext();
 	CreateWindow();
 	CheckGladInit();
 	glViewport(0, 0, data.screenX, data.screenY);
 	shader = Shader("Rendering/VertexShader.s", "Rendering/FragmentShader.s");
 	eventHandler = EventHandler::GetInstance();
+
+	guiManager.Setup(window, &data);
 }
 
 Game::~Game()
@@ -42,6 +49,14 @@ int Game::StartUpdateLoop()
 	keyMap[GLFW_KEY_P] = false;
 
 	while (!glfwWindowShouldClose(window)) {
+		data.Update();
+
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		guiManager.Render();
+		ImGui::ShowDemoWindow();
+
 		ProcessInput();
 
 		deltaTime = glfwGetTime() - lastTime;
@@ -54,13 +69,22 @@ int Game::StartUpdateLoop()
 
 		if (!data.paused) {
 			pm.Vibrate(deltaTime);
-			//pm.CheckCollisions();
+			if (data.collisions) {
+				pm.CheckCollisions();
+			}
 		}
 		pm.Render();
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	ImGui_ImplGlfw_Shutdown();
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui::DestroyContext();
+
 	glfwTerminate();
 	return 1;
 }

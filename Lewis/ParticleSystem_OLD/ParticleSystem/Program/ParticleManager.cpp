@@ -1,13 +1,10 @@
 #include "ParticleManager.h"
 
 ParticleManager::ParticleManager(Shader& shader, GameData* gameData) 
-	: particleRadius(1.0f), 
-	particleSpacing(0.0f), 
-	particleBounciness(0.88f), 
+	: particleRadius(10.0f), 
+	particleSpacing(5.0f), 
 	particleInitialVelocity(100.0f), 
-	particleRepelDistance(1.0f), 
-	mouseRadius(300.0f),
-	shader(shader), gameData(gameData)
+	shader(shader), gameData(gameData), io(ImGui::GetIO())
 {
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_real_distribution<float>vel(-particleInitialVelocity, particleInitialVelocity);
@@ -16,7 +13,7 @@ ParticleManager::ParticleManager(Shader& shader, GameData* gameData)
 	eventHandler->GameEventDispatcher.AddListener(GameEvents::MouseIsDown,
 		std::bind(&ParticleManager::Click, this, std::placeholders::_1));
 
-	minDistanceBetweenParticles = particleRadius * 2.0f + particleRepelDistance;
+	minDistanceBetweenParticles = particleRadius * 2.0f + gameData->particleRepelDistance;
 	cellSize = particleRadius * 2.5f;
 
 	float vX;
@@ -87,42 +84,45 @@ void ParticleManager::Setup()
 
 void ParticleManager::Render()
 {
-	for (Particle& particle : particles) {
-		instanceData.push_back(glm::vec3(particle.coords, glm::length(particle.velocity)));
+	if (!gameData->paused || gameData->clicked) {
+		gameData->clicked = false;
+		for (Particle& particle : particles) {
+			instanceData.push_back(glm::vec3(particle.coords, glm::length(particle.velocity)));
+		}
+		renderObjects->instanceVB.UpdateData(instanceData.data(), instanceData.size() * sizeof(glm::vec3), GL_DYNAMIC_DRAW);
 	}
-	renderObjects->instanceVB.UpdateData(instanceData.data(), instanceData.size() * sizeof(glm::vec3), GL_DYNAMIC_DRAW);
 
 	renderObjects->va.Bind();
 	renderObjects->ib.Bind();
 
 	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instanceData.size());
-	GLenum err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		std::cout << "OpenGL error: " << err << std::endl;
-	}
 }
 
 void ParticleManager::Vibrate(float deltaTime)
 {
+	gameData->ke = 0;
 	for (Particle& particle : particles) {
-		//particle.velocity.y = particle.velocity.y - 300.0f * deltaTime;
+		gameData->ke += (0.5) * glm::length(particle.velocity) * glm::length(particle.velocity);
+		if (gameData->gravity) {
+			particle.velocity.y = particle.velocity.y - 300.0f * deltaTime;
+		}
 		particle.coords += particle.velocity * deltaTime;
-		if (particle.coords.x + particleRadius > gameData->screenX - particleRepelDistance || particle.coords.x - particleRadius < 0.0f + particleRepelDistance) {
+		if (particle.coords.x + particleRadius > gameData->screenX - gameData->particleRepelDistance || particle.coords.x - particleRadius < 0.0f + gameData->particleRepelDistance) {
 			particle.velocity.x *= -0.9f;
 		} 
-		while (particle.coords.x + particleRadius > gameData->screenX - particleRepelDistance) {
+		while (particle.coords.x + particleRadius > gameData->screenX - gameData->particleRepelDistance) {
 			particle.coords.x -= 10.0f;
 		}
-		while (particle.coords.x - particleRadius < 0.0f + particleRepelDistance) {
+		while (particle.coords.x - particleRadius < 0.0f + gameData->particleRepelDistance) {
 			particle.coords.x += 10.0f;
 		}
-		if (particle.coords.y + particleRadius > gameData->screenY - particleRepelDistance || particle.coords.y - particleRadius < 0.0f + particleRepelDistance) {
+		if (particle.coords.y + particleRadius > gameData->screenY - gameData->particleRepelDistance || particle.coords.y - particleRadius < 0.0f + gameData->particleRepelDistance) {
 			particle.velocity.y *= -0.9f;
 		}
-		while (particle.coords.y + particleRadius > gameData->screenY - particleRepelDistance) {
+		while (particle.coords.y + particleRadius > gameData->screenY - gameData->particleRepelDistance) {
 			particle.coords.y -= 10.0f;
 		}
-		while (particle.coords.y - particleRadius < 0.0f + particleRepelDistance) {
+		while (particle.coords.y - particleRadius < 0.0f + gameData->particleRepelDistance) {
 			particle.coords.y += 10.0f;
 		}
 		if (glm::length(particle.velocity) > particleInitialVelocity * 10) {
@@ -163,7 +163,7 @@ void ParticleManager::CheckCollisions()
 					float velAlongNormal = glm::dot(reflectVel, normal);
 
 					if (velAlongNormal < 0.0f) {
-						float impulse = -(1.0f + particleBounciness) * velAlongNormal / 1.9f;
+						float impulse = -(1.0f + gameData->particleBounciness) * velAlongNormal / 1.88f;
 
 						particles[i].velocity -= impulse * normal;
 						particles[j].velocity += impulse * normal;
@@ -199,25 +199,44 @@ void ParticleManager::BuildSpatialHash()
 
 void ParticleManager::Click(const Event<GameEvents>& gameEvent)
 {
-	glm::vec2 centre = gameData->mousePos;
-	float explosionStrength = 500.0f;
-	//std::cout << "X: " << gameData->mousePos.x << " Y: " << gameData->mousePos.y << "\n";
-	for (Particle& particle : particles) {
-		glm::vec2 toParticle = particle.coords - centre;
-		float dist2 = glm::dot(toParticle, toParticle);
+	if (!io.WantCaptureMouse) {
+		if (gameData->paused) {
+			glm::vec2 centre = gameData->mousePos;
+			for (Particle& particle : particles) {
+				glm::vec2 toParticle = particle.coords - centre;
+				float dist2 = glm::dot(toParticle, toParticle);
 
-
-		if (dist2 < mouseRadius * mouseRadius) {
-			float dist = glm::sqrt(dist2);
-			if (dist > 0.0f) {
-				glm::vec2 normalised = toParticle / dist;
-				float force = (1.0f - dist / mouseRadius) * explosionStrength;
-				particle.velocity += normalised * force;
+				
+				if (dist2 < particleRadius * particleRadius) {
+					gameData->currentParticle = &particle;
+					//std::cout << "Particle velocity is: ( " << particle.velocity.x << ", " << particle.velocity.y << ")\n";
+				}
 			}
-			//std::cout << "X velocity: " << particle.velocity.x << "Y velocity: " << particle.velocity.y << "\n";
+		}
+		else {
+			glm::vec2 centre = gameData->mousePos;
+			//std::cout << "X: " << gameData->mousePos.x << " Y: " << gameData->mousePos.y << "\n";
+			for (Particle& particle : particles) {
+				glm::vec2 toParticle = particle.coords - centre;
+				float dist2 = glm::dot(toParticle, toParticle);
+
+
+				if (dist2 < gameData->mouseRadius * gameData->mouseRadius) {
+					float dist = glm::sqrt(dist2);
+					if (dist > 0.0f) {
+						glm::vec2 normalised = toParticle / dist;
+						float force = (1.0f - dist / gameData->mouseRadius) * gameData->mouseInteractStrength;
+						particle.velocity += normalised * force;
+					}
+					//std::cout << "X velocity: " << particle.velocity.x << "Y velocity: " << particle.velocity.y << "\n";
+				}
+			}
+			Render();
 		}
 	}
-	Render();
+	else {
+		gameData->clicked = true;
+	}
 }
 
 glm::vec2 ParticleManager::GenerateRandomVelocity()

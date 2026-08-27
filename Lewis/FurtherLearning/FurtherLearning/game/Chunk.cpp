@@ -77,7 +77,7 @@ void Chunk::RebuildMeshes()
 }
 
 void Chunk::RenderChunk()
-{
+{	
 	va.Bind();
 	ib.Bind();
 	glActiveTexture(GL_TEXTURE0);
@@ -106,8 +106,8 @@ glm::vec2* Chunk::GenerateUVCoords(Block& block, CubeFace face)
 
 	switch (face) {
 	case TOP:		tile = info.uvTop;		break;
-	case BOTTOM:	tile = info.uvSide;		break;
-	default:		tile = info.uvBottom;	break;
+	case BOTTOM:	tile = info.uvBottom;		break;
+	default:		tile = info.uvSide;	break;
 	}
 
 	switch (face)

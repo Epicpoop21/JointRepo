@@ -1,7 +1,16 @@
 #include "GameData.h"
 
-GameData::GameData() : startTime(time(NULL)), elapasedTime(0), mousePos(0.0f)
+#include "ParticleManager.h"
+
+GameData::GameData() : startTime(0), elapasedTime(0), mousePos(0.0f), clicked(false), currentParticle(nullptr), ke(0),
+particleBounciness(0.88f),
+particleRepelDistance(0.0f),
+mouseRadius(700.0f),
+mouseInteractStrength(700.0f),
+collisions(false)
 {
+	startTime = glfwGetTime();
+
 	screenX = 0.0f;
 	screenY = 0.0f;
 	eventHandler = EventHandler::GetInstance();
@@ -23,7 +32,7 @@ GameData::~GameData()
 
 void GameData::Update()
 {
-	elapasedTime = glfwGetTime() - startTime;
+	elapasedTime = int(glfwGetTime() - startTime);
 }
 
 void GameData::InvertPause(const Event<GameEvents>& event)
